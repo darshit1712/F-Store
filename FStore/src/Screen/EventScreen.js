@@ -5,7 +5,7 @@ const EventScreen = ({navigation}) => {
     return (
         <SafeAreaView>
             <View>
-            <CustomHeader title='Event' navigation={()=>{navigation.navigate("EditEvent")}} righticons={require('../Image/add-event.png')}/>
+            <CustomHeader title='Event' navigate={()=>navigation.navigate("EditEvent")} navigation={()=>{navigation.openDrawer()}}  lefticons={require('../Image/menu.png')} righticons={require('../Image/add-event.png')}/>
                 <Text>EventScreen</Text>
             </View>
         </SafeAreaView>

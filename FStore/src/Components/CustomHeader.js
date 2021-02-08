@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 
-const CustomHeader = ({title, navigation, lefticons,leftname,righticons}) => {
+const CustomHeader = ({title, navigation,navigate ,lefticons,leftname,righticons}) => {
   return (
     <View style={{flexDirection: 'row', height: 50}}>
       <View style={{flex: 1, justifyContent: 'center'}}>
@@ -19,7 +19,7 @@ const CustomHeader = ({title, navigation, lefticons,leftname,righticons}) => {
         <Text style={{textAlign: 'center',fontWeight:'bold'}}>{title}</Text>
       </View>
       <View style={{flex: 1,justifyContent:'center'}}>
-      <TouchableOpacity style={{alignSelf:'flex-end',}} onPress={navigation} >
+      <TouchableOpacity style={{alignSelf:'flex-end',}} onPress={navigate} >
         <Image  
           style={{height: 25, width: 25,marginRight:10}}  
           source={righticons}/>

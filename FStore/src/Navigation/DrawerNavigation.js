@@ -33,7 +33,7 @@ function CustomeDrawerContent(props) {
           </View>
           <View style={{flex:1,alignSelf:'center',justifyContent:'flex-end',alignItems:'center'}}>
            <TouchableOpacity onPress={()=>props.navigation.navigate('SignIn')}>
-             <Text style={{backgroundColor:'#74b9ff',paddingHorizontal:50,paddingVertical:10,color:'#fff',fontWeight:'bold'}}>
+             <Text style={{backgroundColor:'#16a085',paddingHorizontal:50,paddingVertical:10,color:'#fff',fontWeight:'bold'}}>
                LogOut
              </Text>
            </TouchableOpacity>
@@ -105,7 +105,7 @@ function TabNavigation() {
           },
         })}
         tabBarOptions={{
-          activeTintColor: 'tomato',
+          activeTintColor: '#16a085',
           inactiveTintColor: 'gray',
         }}
     >
