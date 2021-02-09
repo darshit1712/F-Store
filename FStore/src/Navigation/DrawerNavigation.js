@@ -14,21 +14,27 @@ function CustomeDrawerContent(props) {
     return(
       <SafeAreaView style={{flex:1,justifyContent:'space-around'}}>
 
-          <View style={{flex:2,alignItems:'center',justifyContent:'center'}}>
+          <View style={{flex:2,alignItems:'center',justifyContent:'center',marginVertical:25}}>
             <Image source={require('../Image/profile.png')} style={{width:120,height:120 ,resizeMode:'contain'}} />
+            <TouchableOpacity onPress={()=>props.navigation.navigate('EditeProfile')} >
+              <Text style={{color:'#1abc9c',marginTop:5}}>Edit profile</Text>
+             </TouchableOpacity>
           </View>
-          <View style={{flex:3,marginLeft:'3%'}}>
+          <View style={{flex:4,marginLeft:'3%'}}>
             <TouchableOpacity  style={{marginBottom:'5%'}} onPress={()=>props.navigation.navigate('Home')}>
-                <Text>Home</Text>
+                <Text style={{fontSize:24}}>Home</Text>
             </TouchableOpacity>
             <TouchableOpacity style={{marginBottom:'5%'}} onPress={()=>props.navigation.navigate('Favorit')}>
-                <Text>Favorite</Text>
+                <Text  style={{fontSize:24}}>Favorite</Text>
             </TouchableOpacity>
             <TouchableOpacity style={{marginBottom:'5%'}} onPress={()=>props.navigation.navigate('Event')}>
-                <Text>Event</Text>
+                <Text  style={{fontSize:24}}>Event</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={{marginBottom:'5%'}} onPress={()=>props.navigation.navigate('Editevent')}>
+                <Text  style={{fontSize:24}}>EditeEvent</Text>
             </TouchableOpacity>
             <TouchableOpacity style={{marginBottom:'5%'}} onPress={()=>props.navigation.navigate('Profile')}>
-                <Text>Profile</Text>
+                <Text  style={{fontSize:24}}>Profile</Text>
             </TouchableOpacity>
           </View>
           <View style={{flex:1,alignSelf:'center',justifyContent:'flex-end',alignItems:'center'}}>
@@ -125,6 +131,8 @@ export default function DrawerNavigation({navigation}) {
   return (
     <Drawer.Navigator initialRouteName="MenuTab" drawerContent={props=>CustomeDrawerContent(props)}>
      <Drawer.Screen name="MenuTab" component={TabNavigation} />
+     <Drawer.Screen name="EditeProfile" component={EditeProfileScreen} />
+     <Drawer.Screen name="Editevent" component={EditEventScreen} />
    </Drawer.Navigator>
   );
 }

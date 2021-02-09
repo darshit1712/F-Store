@@ -1,31 +1,59 @@
-import React from 'react'
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
-import { ScrollView } from 'react-native-gesture-handler'
-import symbolicateStackTrace from 'react-native/Libraries/Core/Devtools/symbolicateStackTrace'
-import CustomHeader from '../Components/CustomHeader'
-import Search from '../Components/Search'
-
+import React, {useState} from 'react';
+import {SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
+import Card from '../Components/Card';
+import CustomHeader from '../Components/CustomHeader';
+import Search from '../Components/Search';
 
 const HomeScreen = ({navigation}) => {
-    return (
+  const [like, setLike] = useState(true);
 
-        <SafeAreaView>
-            <CustomHeader title='Home' navigation={()=>{navigation.openDrawer()}} lefticons={require('../Image/menu.png')}/>
-            <Search />
-        <ScrollView>
-            <View style={styles.contioner}>
-                <Text>home</Text>
-            </View>
-        </ScrollView>
-        </SafeAreaView>
-    )
-}
+  const onlike = () => {
+    setLike(like === true ? false : true);
+  };
+  return (
+    <SafeAreaView style={styles.contioner}>
+      <CustomHeader
+        title="Home"
+        navigation={() => {
+          navigation.openDrawer();
+        }}
+        lefticons={require('../Image/menu.png')}
+      />
+      <Search />
+      <ScrollView>
+        <Card
+          like={like}
+          image={require('../Image/event.jpeg')}
+          title="Title"
+          descripation="it is good"
+          onPress={onlike}
+          date="12-12-1953"
+        />
+        <Card
+          like={like}
+          //image={require('../Image/event.jpeg')}
+          title="Title1"
+          descripation="it is good"
+          onPress={onlike}
+          date="12-12-1955"
+        />
+         <Card
+          like={like}
+          image={require('../Image/event.jpeg')}
+          title="Title1"
+          descripation="it is good"
+          onPress={onlike}
+          date="12-12-1955"
+        />
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
 
-export default HomeScreen
+export default HomeScreen;
 
 const styles = StyleSheet.create({
-    contioner:{
-        flex: 1,
-        marginHorizontal:5,
-    }
-})
+  contioner: {
+    flex: 1,
+  },
+});
