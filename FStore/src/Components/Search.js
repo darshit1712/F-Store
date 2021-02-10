@@ -1,11 +1,11 @@
 import React from 'react'
 import { Image, StyleSheet, Text, TextInput, View } from 'react-native'
 
-const Search = () => {
+const Search = ({placeholder,value,onChangeText}) => {
     return (
         <View style={styles.header}>
         <Image style={{width:25,height:25,margin:10}} source={require('../Image/search.png')}/>
-            <TextInput style={{fontSize:24}} placeholder='Search' autoCapitalize='none'/>
+            <TextInput style={{fontSize:24}} placeholder={placeholder} autoCapitalize='none' value={value} onChangeText={onChangeText}/>
         </View>
     )
 }

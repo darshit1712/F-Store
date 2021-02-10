@@ -13,28 +13,34 @@ import EditEventScreen from '../Screen/EditEventScreen'
 function CustomeDrawerContent(props) {
     return(
       <SafeAreaView style={{flex:1,justifyContent:'space-around'}}>
+        <ScrollView>
 
           <View style={{flex:2,alignItems:'center',justifyContent:'center',marginVertical:25}}>
-            <Image source={require('../Image/profile.png')} style={{width:120,height:120 ,resizeMode:'contain'}} />
+            <Image source={{uri:'http://www.pngall.com/wp-content/uploads/5/Profile-Male-PNG.png'}} style={{width:150,height:150,borderRadius:200 ,resizeMode:'contain'}} />
             <TouchableOpacity onPress={()=>props.navigation.navigate('EditeProfile')} >
               <Text style={{color:'#1abc9c',marginTop:5}}>Edit profile</Text>
              </TouchableOpacity>
           </View>
           <View style={{flex:4,marginLeft:'3%'}}>
-            <TouchableOpacity  style={{marginBottom:'5%'}} onPress={()=>props.navigation.navigate('Home')}>
-                <Text style={{fontSize:24}}>Home</Text>
+            <TouchableOpacity  style={{marginBottom:'5%',flexDirection:'row',alignItems:'center'}} onPress={()=>props.navigation.navigate('Home')}>
+                <Image style={{height:25,width:25}} source={require('../Image/home.png')}/>
+                <Text style={{fontSize:24,margin:5}}>Home</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{marginBottom:'5%'}} onPress={()=>props.navigation.navigate('Favorit')}>
-                <Text  style={{fontSize:24}}>Favorite</Text>
+            <TouchableOpacity style={{marginBottom:'5%',flexDirection:'row',alignItems:'center'}} onPress={()=>props.navigation.navigate('Favorit')}>
+               <Image style={{height:25,width:25}} source={require('../Image/heart.png')}/>
+                <Text  style={{fontSize:24,margin:10}}>Favorite</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{marginBottom:'5%'}} onPress={()=>props.navigation.navigate('Event')}>
-                <Text  style={{fontSize:24}}>Event</Text>
+            <TouchableOpacity style={{marginBottom:'5%',flexDirection:'row',alignItems:'center'}} onPress={()=>props.navigation.navigate('Event')}>
+               <Image style={{height:25,width:25}} source={require('../Image/event.png')}/>
+                <Text  style={{fontSize:24,margin:10}}>Event</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{marginBottom:'5%'}} onPress={()=>props.navigation.navigate('Editevent')}>
-                <Text  style={{fontSize:24}}>EditeEvent</Text>
+            <TouchableOpacity style={{marginBottom:'5%',flexDirection:'row',alignItems:'center'}} onPress={()=>props.navigation.navigate('Editevent')}>
+              <Image style={{height:25,width:25}} source={require('../Image/edit.png')}/>
+                <Text  style={{fontSize:24,margin:10}}>EditeEvent</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{marginBottom:'5%'}} onPress={()=>props.navigation.navigate('Profile')}>
-                <Text  style={{fontSize:24}}>Profile</Text>
+            <TouchableOpacity style={{marginBottom:'5%',flexDirection:'row',alignItems:'center'}} onPress={()=>props.navigation.navigate('Profile')}>
+            <Image style={{height:25,width:25}} source={require('../Image/heart.png')}/>
+                <Text  style={{fontSize:24,margin:10}}>Profile</Text>
             </TouchableOpacity>
           </View>
           <View style={{flex:1,alignSelf:'center',justifyContent:'flex-end',alignItems:'center'}}>
@@ -44,6 +50,7 @@ function CustomeDrawerContent(props) {
              </Text>
            </TouchableOpacity>
           </View>
+        </ScrollView>
       </SafeAreaView>
     )
     

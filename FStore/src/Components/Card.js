@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, View ,Image,ImageBackground,TouchableOpacity} from 'react-native'
 
-const Card = ({like,title,date,descripation,onPress,image}) => {
+const Card = ({like,title,date,descripation,onPress,image,place}) => {
     return (
         <View style={styles.container}>
             <View style={styles.card}>
@@ -22,6 +22,10 @@ const Card = ({like,title,date,descripation,onPress,image}) => {
                   </View>
                 </ImageBackground>
                 <View >
+                    <View style={{flexDirection:'row',alignItems:'center'}}>
+                        <Text style={{color:'#000',fontSize:22,marginLeft:10,fontWeight:'bold'}}>Place :-</Text>
+                        <Text style={{color:'#000',fontSize:18,marginLeft:5,fontWeight:'300'}}>{place}</Text>
+                     </View>
                  <Text style={{color:'#000',fontSize:22,marginLeft:10,fontWeight:'bold'}}>Descripation</Text>
                  <Text style={{color:'#000',fontSize:18,marginLeft:10,fontWeight:'300'}} >
                     {descripation}

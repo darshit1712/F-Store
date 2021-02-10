@@ -7,6 +7,7 @@ import CustomHeader from '../Components/CustomHeader';
 import TextInput from '../Components/TextInput';
 import Checkbox from '../Components/Checkbox';
 import moment from 'moment'
+import ImagePicker from 'react-native-image-crop-picker';
 
 const EditeProfileScreen = ({navigation}) => {
   const [fname,setFName]=useState('');
@@ -18,6 +19,7 @@ const EditeProfileScreen = ({navigation}) => {
   const[male,setMale]=useState(false);
   const[female,setFemale]=useState(false);
   const[other,setOther]=useState(false);
+  const [image,setImage]=useState('http://www.pngall.com/wp-content/uploads/5/Profile-Male-PNG.png')
 
   const onMale=()=>{
     setMale(male==false ? true:false )
@@ -47,6 +49,17 @@ const EditeProfileScreen = ({navigation}) => {
   const hideDatePicker = () => {
     setDatePickerVisibility(false);
   };
+  
+  const onAddImage =()=>{
+    ImagePicker.openPicker({
+      width: 300,
+      height: 400,
+      cropping: true
+    }).then(image => {
+      setImage(image.path)
+    });
+  }
+
   return (
     <SafeAreaView style={styles.contioner}>
       <CustomHeader
@@ -62,11 +75,11 @@ const EditeProfileScreen = ({navigation}) => {
       <View style={{flex: 1,alignItems:'center',justifyContent:'center',}}>
           <View>
             <Image
-            style={{height:150,width:150}}
-            source={require('../Image/profile.png')}
+            style={{height:150,width:150,borderRadius:200}}
+            source={{uri:image}}
           />
           </View>
-          <TouchableOpacity >
+          <TouchableOpacity  onPress={onAddImage}>
               <Text style={{color:'#1abc9c',marginTop:5}}>Edit profile</Text>
           </TouchableOpacity>
        </View>
@@ -80,13 +93,12 @@ const EditeProfileScreen = ({navigation}) => {
             <Text style={{marginBottom:10,fontSize:16,color:'rgb(120, 120, 120)'}}>DD-MM-YYYY</Text>:
             <Text style={{marginBottom:10,fontSize:16,color:'#000'}}> {dob}</Text>
             }
-           
            </TouchableOpacity>
            <Text style={{marginHorizontal:10,marginTop:10,marginBottom:10,color:'rgb(120, 120, 120)',fontSize:18}}>Gender</Text>
                <View style={{flexDirection:'row',marginHorizontal:10,marginBottom:20}}>
-                <Checkbox label='Male' onChange={onMale} checked={male}/>
-                <Checkbox label='FeMale' onChange={onfemale} checked={female}/>
-                <Checkbox label='Other' onChange={onother} checked={other}/>
+                <Checkbox label='Male' onChangeText={onMale} checked={male}/>
+                <Checkbox label='FeMale' onChangeText={onfemale} checked={female}/>
+                <Checkbox label='Other' onChangeText={onother} checked={other}/>
                </View>
           <TextInput label='Password' placeholder="Change Password" value={password} onChangeText={(password)=>setPassword(password)}/>
           <Btn title="Save"/>

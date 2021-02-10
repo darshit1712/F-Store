@@ -1,11 +1,14 @@
 import React,{useState} from 'react'
-import { Button, SafeAreaView, StyleSheet, Text, View,TouchableOpacity,Image} from 'react-native'
+import { Button, SafeAreaView, StyleSheet, Text, View,TouchableOpacity,Image,  AlertIOS} from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import Btn from '../Components/Btn'
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import moment from 'moment'
+import moment, { fn } from 'moment'
 import TextInput from '../Components/TextInput'
 import Checkbox from '../Components/Checkbox';
+import ImagePicker from 'react-native-image-crop-picker';
+
+import {db} from '../Firebase/config';
 
  const SignUpScreen = ({navigation}) => {
      const [fname,setFName]=useState('');
@@ -21,6 +24,9 @@ import Checkbox from '../Components/Checkbox';
      const[male,setMale]=useState(false);
      const[female,setFemale]=useState(false);
      const[other,setOther]=useState(false);
+     const [image,setImage]=useState('')
+
+     console.log(image);
     
      const handleConfirm = (date) => {
         setDob(moment(date).format('DD-MM-YYYY'))
@@ -52,10 +58,22 @@ import Checkbox from '../Components/Checkbox';
 
       const onSignUpPress = () =>{navigation.navigate('SignIn')}
 
+      const onAddprofile=()=>{
+        ImagePicker.openPicker({
+            width: 300,
+            height: 400,
+            cropping: true
+          }).then(image => {
+            console.log(image.path);
+            setImage(image.path)
+          });
+      }
 
-      const onsubmit=()=>{
-        const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; //email validation
+      const onsubmit=(e)=>{
+        //e.preventDefault();
        
+
+        const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; //email validation
         if(fname == ''){
             alert('Enter the First_Name')
         }else if (lname == ''){
@@ -66,14 +84,29 @@ import Checkbox from '../Components/Checkbox';
             alert('Enter the valid Email')
         }else if(dob==''){
             alert('Enter the Date of birthday')
-        }else if(gender==''){
-            alert('Enter the Gender')
         }else if(password==''){
             alert("Enter the password")
         }else if(password!==comfirmpassword){
             alert('Passwords must be same')
+        }else{
+            db.collection("user").add({
+                Image:image,
+                FirstName:fname,
+                LastName:lname,
+                Email:email,
+                Dob:dob,
+                password:password,
+                male:male,
+                female:female,
+                other:other
+            })
+            .then(() => {
+                alert("Document written with ID:");
+            })
+            .catch(() => {
+                alert("Error adding document: ");
+            });
         }
-
      }
 
      return (
@@ -83,9 +116,11 @@ import Checkbox from '../Components/Checkbox';
                 <Text style={{fontSize:24,}}>Sign Up</Text>
             </View>
             <View style={styles.content}>
-                <TouchableOpacity style={{flexDirection:'row',justifyContent:'center'}}>
-                  <Image style={{width:60,height:60,marginLeft:10}} source={require('../Image/camera.png')}/>
+
+                <TouchableOpacity style={{flexDirection:'row',justifyContent:'center'}} onPress={onAddprofile}>
+                  <Image style={{width:60,height:60,marginLeft:10}} source={require('../Image/camera.png')||{uri:image}}/>
                 </TouchableOpacity>
+
                <TextInput placeholder='First_Name*' value={fname} onChangeText={(fname)=>setFName(fname)}/>
                <TextInput placeholder='Last_Name' value={lname} onChangeText={(lname)=>setLName(lname)}/>
                <TextInput placeholder='Email*' value={email} onChangeText={(email)=>setEmail(email)}/>
@@ -106,9 +141,7 @@ import Checkbox from '../Components/Checkbox';
                <Btn 
                 type='outline' 
                 title='Sign UP' 
-                onPress={()=>{
-                    onsubmit()
-                    }} />
+                onPress={onsubmit} />
             </View>
             <View style={styles.footer}>
                 <Text style={{color:'#000'}}>
@@ -125,7 +158,6 @@ import Checkbox from '../Components/Checkbox';
                 onConfirm={handleConfirm}
                 onCancel={hideDatePicker}
             />
-
          </ScrollView>
          </SafeAreaView>
      )

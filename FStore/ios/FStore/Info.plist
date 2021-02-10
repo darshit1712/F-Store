@@ -39,8 +39,12 @@
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>evenet app requires photo library access</string>
+	<key>NSCameraUsageDescription</key>
+	<string>evenet app requires camera library access photo</string>
 	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
+	<string>LaunchScreen</string>	
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>

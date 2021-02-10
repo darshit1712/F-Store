@@ -14,6 +14,8 @@ const ProfileScreen = ({navigation}) => {
   const[male,setMale]=useState(false);
   const[female,setFemale]=useState(false);
   const[other,setOther]=useState(false);
+  const [image,setImage]=useState('http://www.pngall.com/wp-content/uploads/5/Profile-Male-PNG.png')
+
 
 
   const onMale=()=>{
@@ -40,8 +42,8 @@ const ProfileScreen = ({navigation}) => {
             <View style={{flex: 1,alignItems:'center',justifyContent:'center',}}>
             <View>
                 <Image
-                style={{height:150,width:150}}
-                source={require('../Image/profile.png')}
+                style={{height:150,width:150,borderRadius:200}}
+                source={{uri:image}}
               />
             </View>
             </View>

@@ -129,11 +129,14 @@ android {
     }
 
     defaultConfig {
+
         applicationId "com.fstore"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+       vectorDrawables.useSupportLibrary = true
+
     }
     splits {
         abi {

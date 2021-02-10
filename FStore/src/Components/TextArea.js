@@ -3,7 +3,8 @@ import { StyleSheet, Text, View,TextInput } from 'react-native'
 import {Input} from 'react-native-elements'
 import { ScrollView } from 'react-native-gesture-handler'
 
-const TextArea = ({numberOfLines,placeholder,multiline,label}) => {
+
+const TextArea = ({numberOfLines,placeholder,multiline,label,onChange,value}) => {
     return (
         <View>
         <Input 
@@ -13,6 +14,8 @@ const TextArea = ({numberOfLines,placeholder,multiline,label}) => {
             placeholder={placeholder}
             placeholderTextColor={"#9E9E9E"}
             label={label}
+            value={value}
+            onChange={onChange}
         />
         </View>
     )

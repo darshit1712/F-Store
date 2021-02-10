@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import { SafeAreaView, StyleSheet, Text, View,Image} from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Btn from '../Components/Btn';
@@ -23,7 +23,17 @@ const onSubmit =()=>{
             alert('Enter the Valid Email')
         }
 }
+// useEffect((userId) => {
+//     const subscriber = firestore()
+//       .collection('user')
+//       .doc(userId)
+//       .onSnapshot(documentSnapshot => {
+//         console.log('User data: ', documentSnapshot.data());
+//       });
 
+//     // Stop listening for updates when no longer required
+//     return () => subscriber();
+//   }, [userId]);
 
     return (
         <SafeAreaView style={styles.contioner}>
@@ -37,13 +47,13 @@ const onSubmit =()=>{
                   label='Email'
                   placeholder='user@gmail.com'
                   value={email}
-                  onChangeText={(email)=>setEmail(email)}
+                  onChangeonChangeText={(email)=>setEmail(email)}
                   />
                   <TextInput 
                   label='Password'
                   placeholder='Enter Password'
                   value={password}
-                  onChangeText={(password)=>setPassword(password)}
+                  onChangeonChangeText={(password)=>setPassword(password)}
                   secureTextEntry={show}
                   />
                   {/* <Text style={styles.errorText}>Authentication is Fail</Text> */}

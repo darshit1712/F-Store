@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import CheckBox from 'react-native-checkbox';
+
 const Checkbox = ({label,onChange,checked}) => {
     return (
         <View style={{flexDirection:'row',alignItems:'center'}}>
