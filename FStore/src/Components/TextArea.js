@@ -4,7 +4,7 @@ import {Input} from 'react-native-elements'
 import { ScrollView } from 'react-native-gesture-handler'
 
 
-const TextArea = ({numberOfLines,placeholder,multiline,label,onChange,value}) => {
+const TextArea = ({numberOfLines,placeholder,multiline,label,onChangeText,value}) => {
     return (
         <View>
         <Input 
@@ -15,7 +15,7 @@ const TextArea = ({numberOfLines,placeholder,multiline,label,onChange,value}) =>
             placeholderTextColor={"#9E9E9E"}
             label={label}
             value={value}
-            onChange={onChange}
+            onChangeText={onChangeText}
         />
         </View>
     )

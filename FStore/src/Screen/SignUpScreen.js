@@ -1,30 +1,32 @@
 import React,{useState} from 'react'
-import { Button, SafeAreaView, StyleSheet, Text, View,TouchableOpacity,Image,  AlertIOS} from 'react-native'
+import { Button, SafeAreaView, StyleSheet, Text, View,TouchableOpacity,Image,Platfrom,  ActivityIndicator} from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import Btn from '../Components/Btn'
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import moment, { fn } from 'moment'
+import moment from 'moment'
 import TextInput from '../Components/TextInput'
 import Checkbox from '../Components/Checkbox';
 import ImagePicker from 'react-native-image-crop-picker';
+import firestore from '@react-native-firebase/firestore';
+import storage,{ firebase } from '@react-native-firebase/storage';
 
-import {db} from '../Firebase/config';
 
  const SignUpScreen = ({navigation}) => {
+    const reference = storage().ref('black-t-shirt-sm.png');
+     const [isLoading,setIsloading]=useState(false)
      const [fname,setFName]=useState('');
      const [lname,setLName]=useState('');
      const [email,setEmail]=useState('');
-     const [gender,setGender]=useState('');
+     //const [gender,setGender]=useState('');
      const [dob,setDob]=useState('');
      const [password,setPassword]=useState('');
      const [comfirmpassword,setComfirmpassword]=useState('');
-     const [error,setEroor]=useState(true);
-     const [emaileroor,setEmailError]=useState(true);
      const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
      const[male,setMale]=useState(false);
      const[female,setFemale]=useState(false);
      const[other,setOther]=useState(false);
-     const [image,setImage]=useState('')
+     const [image,setImage]=useState(null);
+     const [show,setShow]=useState(true)
 
      console.log(image);
     
@@ -41,17 +43,17 @@ import {db} from '../Firebase/config';
         setDatePickerVisibility(false);
       };
       const onMale=()=>{
-        setMale(male==false ? true:false )
+        setMale(!male)
         setFemale(false)
         setOther(false)
       }
       const onfemale=()=>{
-        setFemale(female==false ? true:false)
+        setFemale(!female)
         setOther(false);
         setMale(false)
       }
       const onother =()=>{
-          setOther(other==false?true:false)
+          setOther(!other)
           setFemale(false);
           setMale(false)
       }
@@ -64,23 +66,23 @@ import {db} from '../Firebase/config';
             height: 400,
             cropping: true
           }).then(image => {
-            console.log(image.path);
-            setImage(image.path)
+             const uriImage=image.sourceURL;
+              setImage(uriImage)
+              postImage()
           });
       }
 
-      const onsubmit=(e)=>{
-        //e.preventDefault();
-       
-
+      const onsubmit= async(e)=>{
         const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; //email validation
-        if(fname == ''){
+        if(image== ''){
+            alert('place add image')
+        }else if(fname == ''){
             alert('Enter the First_Name')
         }else if (lname == ''){
             alert('Enter the Last_Name')
         }else if (email== ''){
             alert('Enter the Email')
-        }else if (reg.test(email) !== emaileroor){
+        }else if (reg.test(email) !== true){
             alert('Enter the valid Email')
         }else if(dob==''){
             alert('Enter the Date of birthday')
@@ -89,8 +91,10 @@ import {db} from '../Firebase/config';
         }else if(password!==comfirmpassword){
             alert('Passwords must be same')
         }else{
-            db.collection("user").add({
-                Image:image,
+            const imageUrl = await uploadImage();
+            setIsloading(true)
+            firestore().collection("user").add({
+                Image:imageUrl,
                 FirstName:fname,
                 LastName:lname,
                 Email:email,
@@ -101,13 +105,39 @@ import {db} from '../Firebase/config';
                 other:other
             })
             .then(() => {
+                setIsloading(false)
                 alert("Document written with ID:");
+
             })
             .catch(() => {
                 alert("Error adding document: ");
             });
         }
      }
+     const uploadImage = async () => {
+        if( image == null ) {
+          return null;
+        }
+        const uploadUri = image;
+        let filename = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
+    
+        const extension = filename.split('.').pop(); 
+        const name = filename.split('.').slice(0, -1).join('.');
+        filename = name + Date.now() + '.' + extension;
+    
+        const storageRef = firebase.storage().ref(`User/${filename}`);
+        const task = storageRef.putFile(uploadUri)
+        try {
+          setIsloading(true)
+          await task;
+          const url = await storageRef.getDownloadURL();
+          setIsloading(false)
+          return url;
+        } catch (e) {
+          console.log(e);
+          return null;
+        }
+      };
 
      return (
          <SafeAreaView style={styles.continer}>
@@ -115,10 +145,16 @@ import {db} from '../Firebase/config';
             <View style={styles.header}>
                 <Text style={{fontSize:24,}}>Sign Up</Text>
             </View>
+            {isLoading && <ActivityIndicator size="large" style={styles.loadingIndicator} />}
             <View style={styles.content}>
 
                 <TouchableOpacity style={{flexDirection:'row',justifyContent:'center'}} onPress={onAddprofile}>
-                  <Image style={{width:60,height:60,marginLeft:10}} source={require('../Image/camera.png')||{uri:image}}/>
+                {image!= null ?<Image
+                        style={{height:150,width:150,borderRadius:200}}
+                        source={{uri:image}}
+                    />:
+                    <Image style={{width:60,height:60,marginLeft:10}} source={require('../Image/camera.png')||{uri:image}}/>
+                    }
                 </TouchableOpacity>
 
                <TextInput placeholder='First_Name*' value={fname} onChangeText={(fname)=>setFName(fname)}/>
@@ -137,7 +173,7 @@ import {db} from '../Firebase/config';
                 <Checkbox label='Other' onChange={onother} checked={other}/>
                </View>
                <TextInput placeholder='Password*' value={password} onChangeText={(password)=>setPassword(password)}/>
-               <TextInput placeholder='Confirm Password*' value={comfirmpassword} onChangeText={(comfirmpassword)=>setComfirmpassword(comfirmpassword)}/>
+               <TextInput placeholder='Confirm Password*' value={comfirmpassword} secureTextEntry={show} onChangeText={(comfirmpassword)=>setComfirmpassword(comfirmpassword)}/>
                <Btn 
                 type='outline' 
                 title='Sign UP' 

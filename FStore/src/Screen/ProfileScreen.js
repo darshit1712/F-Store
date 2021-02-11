@@ -16,24 +16,6 @@ const ProfileScreen = ({navigation}) => {
   const[other,setOther]=useState(false);
   const [image,setImage]=useState('http://www.pngall.com/wp-content/uploads/5/Profile-Male-PNG.png')
 
-
-
-  const onMale=()=>{
-    setMale(male==false ? true:false )
-    setFemale(false)
-    setOther(false)
-  }
-  const onfemale=()=>{
-    setFemale(female==false ? true:false)
-    setOther(false);
-    setMale(false)
-  }
-  const onother =()=>{
-      setOther(other==false?true:false)
-      setFemale(false);
-      setMale(false)
-  }
-
     return (
         
         <SafeAreaView style={styles.contioner}>
@@ -54,9 +36,9 @@ const ProfileScreen = ({navigation}) => {
               <TextInput label='Date of birthday' placeholder="DD-MM-YYYY" value={dob} onChangeText={(dob)=>setDob(dob)}/>
               <Text style={{marginHorizontal:10,marginBottom:10,color:'rgb(120, 120, 120)',fontSize:18}}>Gender</Text>
                <View style={{flexDirection:'row',marginHorizontal:10,marginBottom:10}}>
-                <Checkbox label='Male' onChange={onMale} checked={male}/>
-                <Checkbox label='FeMale' onChange={onfemale} checked={female}/>
-                <Checkbox label='Other' onChange={onother} checked={other}/>
+                <Checkbox label='Male'  checked={male}/>
+                <Checkbox label='FeMale' checked={female}/>
+                <Checkbox label='Other' checked={other}/>
                </View>
             </View>
            </ScrollView>

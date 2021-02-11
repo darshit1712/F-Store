@@ -14,7 +14,7 @@ const FavoriteScreen = ({route,navigation}) => {
     const [passengersList, setPassengersList] = useState([]);
 
     const onlike = () => {
-       setLike(like == false ? true : false);
+       setLike(!like);
 
     };
     const datas=[
