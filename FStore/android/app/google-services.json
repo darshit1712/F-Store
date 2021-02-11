@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "172740045702",
+    "firebase_url": "https://f-store-ca8e4-default-rtdb.firebaseio.com",
+    "project_id": "f-store-ca8e4",
+    "storage_bucket": "f-store-ca8e4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:172740045702:android:89e1faa391cca7eb619a07",
+        "android_client_info": {
+          "package_name": "com.fstore"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "172740045702-msmhlmion1op26las1n65vc65v06fr2j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmUvmVyuPquUUZLmC_B8QL4lZm-z0Ny20"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "172740045702-msmhlmion1op26las1n65vc65v06fr2j.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "172740045702-vphnh9eda6j0i6md7hiu4mrhdd993pct.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.F-Store"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
