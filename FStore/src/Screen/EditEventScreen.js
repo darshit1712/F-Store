@@ -1,5 +1,5 @@
-import React,{useState,useEffect} from 'react';
-import {SafeAreaView, StyleSheet, Text, View ,Image,ActivityIndicator} from 'react-native';
+import React,{useState,useEffect,useContext} from 'react';
+import {SafeAreaView, StyleSheet, Text, View ,Image,ActivityIndicator, Button} from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import Btn from '../Components/Btn';
 import CustomHeader from '../Components/CustomHeader';
@@ -12,7 +12,11 @@ import ImagePicker from 'react-native-image-crop-picker';
 import storage,{firebase} from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
 
+import { Context } from '../context/FStoreContext'
+
+
 const EditEventScreen = ({navigation}) => {
+  const {addstore,state} =useContext(Context);
 
   const [isLoading,setIsloading]=useState(false)
   const [image,setImage]=useState(null)
@@ -70,32 +74,20 @@ const EditEventScreen = ({navigation}) => {
         image:imageUrl
     })
     .then(() => {
+        setTitle('');
+        setDescripation('');
+        setDate('');
+        setPlace('');
+        setQuest('');
         setIsloading(false)
         alert("All Data is Save ");
+        addstore(title,descripation,place,quest,date,image)
   
     })
     .catch(() => {
         alert("Place Add to data ");
     });
     }
-    // const uploadUri=image;
-    // let filename=uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
-    // try{
-    //   setIsloading(true)
-    //   await firebase
-    //          .storage()
-    //          .ref(filename)
-    //          .putFile(uploadUri)
-    //          .then((snapshot)=>{
-    //           console.log(`${filename} has been successfully uploaded.`);
-    //          });
-      
-    //   setIsloading(false)
-    //    alert('image is upload')
-    // }catch(e){
-
-    //     console.log("aaaa",e);
-    // }
   }
   const uploadImage = async () => {
     if( image == null ) {
@@ -151,7 +143,10 @@ const EditEventScreen = ({navigation}) => {
             }
            </TouchableOpacity>
             <TextInput label='Quest' placeholder='Quest' value={quest} onChangeText={(quest)=>setQuest(quest)}/>
-            <Btn title='Add' onPress={onsubmit}/>
+            <Btn title='Add' 
+              onPress={onsubmit}/>
+        
+            {/* <Button title='Add' onPress={()=>{addstore(title,place,descripation,date,quest,image)}}/> */}
             {isLoading && <ActivityIndicator size="large" style={styles.loadingIndicator} />}
         </View>
       </ScrollView>

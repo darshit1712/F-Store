@@ -5,7 +5,7 @@ const Card = ({like,title,date,descripation,onPress,image,place}) => {
     return (
         <View style={styles.container}>
             <View style={styles.card}>
-                <ImageBackground style={{width:"100%",height:200,resizeMode:'cover'}} source={image}>
+                <ImageBackground style={{width:"100%",height:200,resizeMode:'cover'}} source={{uri:image}}>
                   <View style={{flex:1}}>
                       {like===true? <TouchableOpacity style={{alignSelf:'flex-end'}} onPress={onPress}>
                         <Image style={{width:30,height:30,margin:10 }} source={require('../Image/like-black.png')}/> 

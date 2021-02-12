@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState,useContext} from 'react'
 import { Button, SafeAreaView, StyleSheet, Text, View,TouchableOpacity,Image,Platfrom,  ActivityIndicator} from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import Btn from '../Components/Btn'
@@ -9,9 +9,12 @@ import Checkbox from '../Components/Checkbox';
 import ImagePicker from 'react-native-image-crop-picker';
 import firestore from '@react-native-firebase/firestore';
 import storage,{ firebase } from '@react-native-firebase/storage';
+import { Context } from '../context/FStoreContext'
 
 
  const SignUpScreen = ({navigation}) => {
+    const {addUser,state} =useContext(Context);
+
     const reference = storage().ref('black-t-shirt-sm.png');
      const [isLoading,setIsloading]=useState(false)
      const [fname,setFName]=useState('');
@@ -28,8 +31,6 @@ import storage,{ firebase } from '@react-native-firebase/storage';
      const [image,setImage]=useState(null);
      const [show,setShow]=useState(true)
 
-     console.log(image);
-    
      const handleConfirm = (date) => {
         setDob(moment(date).format('DD-MM-YYYY'))
         hideDatePicker();
@@ -73,6 +74,7 @@ import storage,{ firebase } from '@react-native-firebase/storage';
       }
 
       const onsubmit= async(e)=>{
+    
         const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; //email validation
         if(image== ''){
             alert('place add image')
@@ -105,9 +107,18 @@ import storage,{ firebase } from '@react-native-firebase/storage';
                 other:other
             })
             .then(() => {
+                setFName('');
+                setLName('');
+                setPassword('');
+                setComfirmpassword('');
+                setDob('');
+                setEmail('');
+                setMale(false);
+                setFemale(false);
+                setOther(false);
                 setIsloading(false)
                 alert("Document written with ID:");
-
+                addUser(fname,lname,dob,image,male,female,other,email)
             })
             .catch(() => {
                 alert("Error adding document: ");

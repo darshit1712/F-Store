@@ -3,6 +3,7 @@ import { SafeAreaView, StyleSheet, Text, View,Image} from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Btn from '../Components/Btn';
 import TextInput from '../Components/TextInput'
+import storage,{firebase} from '@react-native-firebase/storage';
 
 
 const SignInScreen = ({navigation}) => {
@@ -10,30 +11,39 @@ const [email,setEmail]=useState('');
 const [password,setPassword]=useState('');
 const [show,setShow]=useState(true);
 const [emaileroor,setEmailError]=useState(true);
- 
+const [lists, setLists] = useState([])
+
+lists.map(e=>{ 
+    console.log(e.Email)
+})
+
+useEffect(() => {
+    firebase
+    .firestore()
+    .collection("user")
+    .onSnapshot(snapshot => {
+      const lists = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      }))
+      setLists(lists)
+    })
+  }, [])
+  
+
 const onSumbmitNavigation=()=>{
     navigation.navigate('Drawer')
 }
 const onSubmit =()=>{
-    const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; //email validation
-        if (reg.test(email) === emaileroor){
-            setEmailError(true);
-        }
-        else{
-            alert('Enter the Valid Email')
-        }
+    
+    // const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; //email validation
+    //     if (reg.test(email) === emaileroor){
+    //         setEmailError(true);
+    //     }
+    //     else{
+    //         alert('Enter the Valid Email')
+    //     }
 }
-// useEffect((userId) => {
-//     const subscriber = firestore()
-//       .collection('user')
-//       .doc(userId)
-//       .onSnapshot(documentSnapshot => {
-//         console.log('User data: ', documentSnapshot.data());
-//       });
-
-//     // Stop listening for updates when no longer required
-//     return () => subscriber();
-//   }, [userId]);
 
     return (
         <SafeAreaView style={styles.contioner}>
@@ -47,13 +57,13 @@ const onSubmit =()=>{
                   label='Email'
                   placeholder='user@gmail.com'
                   value={email}
-                  onChangeonChangeText={(email)=>setEmail(email)}
+                  onChangeText={(email)=>setEmail(email)}
                   />
                   <TextInput 
                   label='Password'
                   placeholder='Enter Password'
                   value={password}
-                  onChangeonChangeText={(password)=>setPassword(password)}
+                  onChangeText={(password)=>setPassword(password)}
                   secureTextEntry={show}
                   />
                   {/* <Text style={styles.errorText}>Authentication is Fail</Text> */}

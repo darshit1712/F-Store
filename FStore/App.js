@@ -5,10 +5,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 import SignInScreen from './src/Screen/SignInScreen';
 import SignUpScreen from './src/Screen/SignUpScreen';
 import DrawerNavigation from './src/Navigation/DrawerNavigation';
-
+import { Provider } from './src/context/FStoreContext';
 const Stack = createStackNavigator();
 
-function App() {
+const App =()=> {
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -20,4 +20,10 @@ function App() {
   );
 }
 
-export default App;
+export default () => {
+  return (
+    <Provider>
+      <App />
+    </Provider>
+  );
+};

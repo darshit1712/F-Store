@@ -1,43 +1,39 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import { SafeAreaView, StyleSheet, Text, View,FlatList} from 'react-native'
 import {  ScrollView } from 'react-native-gesture-handler'
 import { Colors } from 'react-native/Libraries/NewAppScreen'
 import Card from '../Components/Card'
 import CustomHeader from '../Components/CustomHeader'
 import Search from '../Components/Search'
+import storage,{firebase} from '@react-native-firebase/storage';
 
 const FavoriteScreen = ({route,navigation}) => {
 //    const  {data}= route.params.data;
 //     console.log(data);
-    const [like, setLike] = useState(false);
+    const [like, setLike] = useState([]);
     const [serach, setSerach] = useState('');
     const [passengersList, setPassengersList] = useState([]);
+    const [lists, setLists] = useState([])
 
-    const onlike = () => {
-       setLike(!like);
+  
+    useEffect(() => {
+      firebase
+      .firestore()
+      .collection("UserEvent")
+      .onSnapshot(snapshot => {
+        const lists = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+        }))
+        setLists(lists)
+      })
+    }, [])
 
+    const onlike = (item) => {
+      const d=item
+      
     };
-    const datas=[
-        {
-          image:require('../Image/event.jpeg'),
-          title:'ck1',
-          descripation:'it is a  good',
-          date:'1-02-2021',
-          place:'surt',
-          quest:'student',
-          like:false
-        },
-        {
-          image:require('../Image/event2.jpeg'),
-          title:'ck2',
-          descripation:'it is a  very good',
-          date:'15-04-2021',
-          place:'surat',
-          quest:'te',
-          like:true
-        },
-       
-    ];
+    
     return (
         <SafeAreaView style={styles.contioner}>
         <CustomHeader title='Favorit' lefticons={require('../Image/menu.png')} navigation={()=>{navigation.openDrawer()}} />
@@ -46,27 +42,27 @@ const FavoriteScreen = ({route,navigation}) => {
           value={serach}
           onChangeText={event =>{setSerach(event)}}/>
         <FlatList 
-        data={datas.filter((item)=>{
+        data={lists.filter((e)=>{
                         if(serach==""){
-                            return item;
-                           }else if( item.date.toString().includes(serach.toString()) ||
-                           item.descripation.toLowerCase().includes(serach.toLowerCase()) ||
-                           item.title.toLowerCase().includes(serach.toLowerCase()) ||
-                           item.place.toLowerCase().includes(serach.toLowerCase()) ){
+                            return e;
+                           }else if( e.date.toString().includes(serach.toString()) ||
+                           e.descripation.includes(serach) ||
+                           e.title.includes(serach) ||
+                           e.place.includes(serach) ){
                                return item;
                        }})
         }
-        keyExtractor={item=>item.title}
+        keyExtractor={item=>item.id}
         renderItem={({item})=>{
           return(
             <Card
             like={like}
             image={item.image}
-            title={item.title}
-            descripation={item.descripation}
-            onPress={onlike}
+            title={item.Title}
+            descripation={item.Descripation}
+            onPress={()=>setLike(!like)}
             date={item.date}
-            place={item.place}
+            place={item.Place}
         />)}}
       />
         </SafeAreaView>

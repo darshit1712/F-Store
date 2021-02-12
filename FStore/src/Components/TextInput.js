@@ -3,7 +3,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import {Input} from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const TextInput = ({placeholder, label,value, onChangeText, secureTextEntry,onPress}) => {
+const TextInput = ({placeholder, label,value, onChangeText, secureTextEntry,onPress,editable}) => {
   return (
     <View>
     
@@ -14,6 +14,7 @@ const TextInput = ({placeholder, label,value, onChangeText, secureTextEntry,onPr
         value={value}
         onChangeText={onChangeText}
         autoCapitalize='none'
+        editable={editable}
         />
 
     </View>
