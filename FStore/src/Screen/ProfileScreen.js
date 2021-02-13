@@ -16,10 +16,8 @@ import {Context} from '../context/FStoreContext';
 
 const ProfileScreen = ({navigation}) => {
   const {state} = useContext(Context);
-  console.log(state.detils);
-useEffect(() => {
+  //console.log(state.detils);
 
-}, [state.detils])
   return (
     <SafeAreaView style={styles.contioner}>
       <CustomHeader
@@ -44,7 +42,7 @@ useEffect(() => {
           <TextInput
             label="First Name"
             placeholder="First Name"
-            value={state.fname}
+            //value={state.fname}
             editable={false}
           />
           <TextInput

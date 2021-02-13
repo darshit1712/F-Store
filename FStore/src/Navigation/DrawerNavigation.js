@@ -114,7 +114,6 @@ function TabNavigation() {
               ? require('../Image/user-black.png') 
               : require('../Image/user.png');
             }
-
             // You can return any component that you like here!
             return <Image source={iconName} style={{width:30,height:20 ,resizeMode:'contain'}} />;
           },

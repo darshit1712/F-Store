@@ -23,7 +23,7 @@ const App =()=> {
       <Stack.Screen name="Drawer" component={DrawerNavigation} options={{headerShown:false}}/> :
        <Stack.Screen name="SignIn" component={SignInScreen} options={{headerShown:false}}/>}
         <Stack.Screen name="SignUp" component={SignUpScreen} options={{headerShown:false}}/>
-        <Stack.Screen name="SignIn" component={SignInScreen} options={{headerShown:false}}/>
+       
    
       </Stack.Navigator>
     </NavigationContainer>
