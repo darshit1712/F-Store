@@ -1,6 +1,6 @@
 import React,{useState} from 'react';
-import {SafeAreaView, StyleSheet, Text, View,Image} from 'react-native';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import {SafeAreaView, StyleSheet, Text, View,Image,} from 'react-native';
+import {   TouchableOpacity } from 'react-native-gesture-handler';
 import Btn from '../Components/Btn';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import CustomHeader from '../Components/CustomHeader';
@@ -8,6 +8,8 @@ import TextInput from '../Components/TextInput';
 import Checkbox from '../Components/Checkbox';
 import moment from 'moment'
 import ImagePicker from 'react-native-image-crop-picker';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+
 
 const EditeProfileScreen = ({navigation}) => {
   const [fname,setFName]=useState('');
@@ -70,8 +72,7 @@ const EditeProfileScreen = ({navigation}) => {
         lefticons={require('../Image/back.png')}
         leftname="Back"
       />
-      <ScrollView>
-
+      <KeyboardAwareScrollView>
       <View style={{flex: 1,alignItems:'center',justifyContent:'center',}}>
           <View>
             <Image
@@ -103,7 +104,7 @@ const EditeProfileScreen = ({navigation}) => {
           <TextInput label='Password' placeholder="Change Password" value={password} onChangeText={(password)=>setPassword(password)}/>
           <Btn title="Save"/>
         </View>
-      </ScrollView>
+      </KeyboardAwareScrollView>
         <DateTimePickerModal
                 isVisible={isDatePickerVisible}
                 mode="date"

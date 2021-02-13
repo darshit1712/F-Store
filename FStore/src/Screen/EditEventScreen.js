@@ -8,6 +8,7 @@ import TextInput from '../Components/TextInput';
 import moment from 'moment'
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import ImagePicker from 'react-native-image-crop-picker';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import storage,{firebase} from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
@@ -124,7 +125,7 @@ const EditEventScreen = ({navigation}) => {
         lefticons={require('../Image/back.png')}
         leftname="Back"
       />
-      <ScrollView>
+      <KeyboardAwareScrollView>
         <View style={styles.headerImage}>
         {image!==null? <Image style={{height:150,width:300}} source={{uri:image}}/> : null}
             <TouchableOpacity onPress={()=>onaddImage()}>
@@ -149,7 +150,7 @@ const EditEventScreen = ({navigation}) => {
             {/* <Button title='Add' onPress={()=>{addstore(title,place,descripation,date,quest,image)}}/> */}
             {isLoading && <ActivityIndicator size="large" style={styles.loadingIndicator} />}
         </View>
-      </ScrollView>
+      </KeyboardAwareScrollView>
       <DateTimePickerModal
                 isVisible={isDatePickerVisible}
                 mode="date"

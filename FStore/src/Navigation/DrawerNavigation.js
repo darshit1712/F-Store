@@ -9,8 +9,10 @@ import EventScreen from '../Screen/EventScreen';
 import FavoriteScreen from '../Screen/FavoriteScreen'
 import EditeProfileScreen from '../Screen/EditeProfileScreen';
 import EditEventScreen from '../Screen/EditEventScreen'
+import { Context } from '../context/FStoreContext'
 
 function CustomeDrawerContent(props) {
+
     return(
       <SafeAreaView style={{flex:1,justifyContent:'space-around'}}>
         <ScrollView>
@@ -140,6 +142,7 @@ export default function DrawerNavigation({navigation}) {
      <Drawer.Screen name="MenuTab" component={TabNavigation} />
      <Drawer.Screen name="EditeProfile" component={EditeProfileScreen} />
      <Drawer.Screen name="Editevent" component={EditEventScreen} />
+     <Drawer.Screen name="logOut" component={EditEventScreen} />
    </Drawer.Navigator>
   );
 }

@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext,useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -16,6 +16,10 @@ import {Context} from '../context/FStoreContext';
 
 const ProfileScreen = ({navigation}) => {
   const {state} = useContext(Context);
+  console.log(state.detils);
+useEffect(() => {
+
+}, [state.detils])
   return (
     <SafeAreaView style={styles.contioner}>
       <CustomHeader
@@ -32,7 +36,7 @@ const ProfileScreen = ({navigation}) => {
           <View>
             <Image
               style={{height: 150, width: 150, borderRadius: 200}}
-              source={{uri: state.detils.image}}
+              source={{uri:'http://www.pngall.com/wp-content/uploads/5/Profile-Male-PNG.png' }}
             />
           </View>
         </View>
@@ -40,25 +44,25 @@ const ProfileScreen = ({navigation}) => {
           <TextInput
             label="First Name"
             placeholder="First Name"
-            value={state.detils.fname}
+            value={state.fname}
             editable={false}
           />
           <TextInput
             label="Last Name"
             placeholder="First Name"
-            value={state.detils.lname}
+           // value={state.lname}
             editable={false}
           />
           <TextInput
             label="Email"
             placeholder="First Name"
-            value={state.detils.email}
+           // value={state.email}
             editable={false}
           />
           <TextInput
             label="Date of birthday"
             placeholder="DD-MM-YYYY"
-            value={state.detils.dob}
+            //value={state.detils.dob}
             editable={false}
           />
           <Text
@@ -76,9 +80,16 @@ const ProfileScreen = ({navigation}) => {
               marginHorizontal: 10,
               marginBottom: 10,
             }}>
-            <Checkbox label="Male" checked={male&&state.detils.male} />
-            <Checkbox label="FeMale" checked={state.detils.female} />
-            <Checkbox label="Other" checked={state.detils.other} />
+            <Checkbox label="Male" 
+           // checked={state.male} 
+
+            />
+            <Checkbox label="FeMale" 
+            //checked={state.female}
+             />
+            <Checkbox label="Other" 
+            //checked={state.other}
+             />
           </View>
         </View>
       </ScrollView>

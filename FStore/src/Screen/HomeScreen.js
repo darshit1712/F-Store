@@ -4,9 +4,12 @@ import Card from '../Components/Card';
 import CustomHeader from '../Components/CustomHeader';
 import Search from '../Components/Search';
 import storage,{firebase} from '@react-native-firebase/storage';
+import { Context } from '../context/FStoreContext'
 
 
 const HomeScreen = ({navigation}) => {
+  const {signout,state} =React.useContext(Context);
+
   const [like, setLike] = useState(true);
   const [serach, setSerach] = useState('');
   const [lists, setLists] = useState([])
@@ -39,6 +42,11 @@ const HomeScreen = ({navigation}) => {
           navigation.openDrawer();
         }}
         lefticons={require('../Image/menu.png')}
+        righticons={require('../Image/logout.png')}
+        navigate={() => {
+          signout();
+        }}
+
       />
      
       <Search  

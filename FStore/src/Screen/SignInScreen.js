@@ -1,21 +1,22 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState,useEffect,useContext} from 'react'
 import { SafeAreaView, StyleSheet, Text, View,Image} from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Btn from '../Components/Btn';
 import TextInput from '../Components/TextInput'
 import storage,{firebase} from '@react-native-firebase/storage';
-
+import { Context } from '../context/FStoreContext'
 
 const SignInScreen = ({navigation}) => {
+const {signIn,state} =useContext(Context);
 const [email,setEmail]=useState('');
 const [password,setPassword]=useState('');
 const [show,setShow]=useState(true);
 const [emaileroor,setEmailError]=useState(true);
 const [lists, setLists] = useState([])
 
-lists.map(e=>{ 
-    console.log(e.Email)
-})
+// lists.map(e=>{ 
+//     console.log(e.Email)
+// })
 
 useEffect(() => {
     firebase
@@ -31,8 +32,8 @@ useEffect(() => {
   }, [])
   
 
-const onSumbmitNavigation=()=>{
-    navigation.navigate('Drawer')
+const onSumbmitNavigation=(email,password)=>{
+    signIn(email,password);
 }
 const onSubmit =()=>{
     
@@ -70,7 +71,7 @@ const onSubmit =()=>{
                   <Btn title='Sign In' 
                     type='outline' 
                     onPress={()=>{
-                        onSumbmitNavigation();
+                        onSumbmitNavigation(email,password);
                         //onSubmit();
 
                   }}/>

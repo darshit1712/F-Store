@@ -6,15 +6,25 @@ import SignInScreen from './src/Screen/SignInScreen';
 import SignUpScreen from './src/Screen/SignUpScreen';
 import DrawerNavigation from './src/Navigation/DrawerNavigation';
 import { Provider } from './src/context/FStoreContext';
+import { Context } from './src/context/FStoreContext'
+
 const Stack = createStackNavigator();
 
 const App =()=> {
+  const {gettoken,state} =React.useContext(Context);
+  const [show,hide]=React.useState(true)
+  React.useEffect(() => {
+    gettoken()
+  }, []);
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="SignIn" component={SignInScreen} options={{headerShown:false}}/>
+      {state.email !==null ? 
+      <Stack.Screen name="Drawer" component={DrawerNavigation} options={{headerShown:false}}/> :
+       <Stack.Screen name="SignIn" component={SignInScreen} options={{headerShown:false}}/>}
         <Stack.Screen name="SignUp" component={SignUpScreen} options={{headerShown:false}}/>
-        <Stack.Screen name="Drawer" component={DrawerNavigation} options={{headerShown:false}}/>
+        <Stack.Screen name="SignIn" component={SignInScreen} options={{headerShown:false}}/>
+   
       </Stack.Navigator>
     </NavigationContainer>
   );

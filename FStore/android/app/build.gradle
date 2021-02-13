@@ -130,6 +130,7 @@ android {
     }
 
     defaultConfig {
+       compile project(':react-native-image-crop-picker')
 
         applicationId "com.fstore"
         minSdkVersion rootProject.ext.minSdkVersion
