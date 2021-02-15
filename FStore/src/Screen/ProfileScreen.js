@@ -15,8 +15,12 @@ import Checkbox from '../Components/Checkbox';
 import {Context} from '../context/FStoreContext';
 
 const ProfileScreen = ({navigation}) => {
-  const {state} = useContext(Context);
-  //console.log(state.detils);
+  const {signout,state} = useContext(Context);
+
+  console.log(state.userData);
+useEffect(() => {
+ 
+}, [state.userData])
 
   return (
     <SafeAreaView style={styles.contioner}>
@@ -53,7 +57,7 @@ const ProfileScreen = ({navigation}) => {
           />
           <TextInput
             label="Email"
-            placeholder="First Name"
+            placeholder={state.userData||'as'}
            // value={state.email}
             editable={false}
           />
@@ -76,19 +80,24 @@ const ProfileScreen = ({navigation}) => {
             style={{
               flexDirection: 'row',
               marginHorizontal: 10,
-              marginBottom: 10,
+              marginBottom: 20,
             }}>
-            <Checkbox label="Male" 
-           // checked={state.male} 
+                <Checkbox label='Male'
+                  //checked={'male'}
 
-            />
-            <Checkbox label="FeMale" 
-            //checked={state.female}
-             />
-            <Checkbox label="Other" 
-            //checked={state.other}
-             />
+                  />
+                <Checkbox label='FeMale'  
+                //checked={'female'}
+
+                />
+                <Checkbox label='Other' 
+               // checked={'other'}
+
+                />
+             
           </View>
+
+          <Btn title='Log Out' onPress={()=> signout()}/>
         </View>
       </ScrollView>
     </SafeAreaView>

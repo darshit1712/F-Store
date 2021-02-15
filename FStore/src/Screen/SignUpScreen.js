@@ -1,4 +1,4 @@
-import React,{useState,useContext} from 'react'
+import React,{useState,useContext,useEffect} from 'react'
 import { Button, SafeAreaView, StyleSheet, Text, View,TouchableOpacity,Image,Platfrom,  ActivityIndicator} from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import Btn from '../Components/Btn'
@@ -10,26 +10,25 @@ import ImagePicker from 'react-native-image-crop-picker';
 import firestore from '@react-native-firebase/firestore';
 import storage,{ firebase } from '@react-native-firebase/storage';
 import { Context } from '../context/FStoreContext'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 
  const SignUpScreen = ({navigation}) => {
-    const {addUser,state} =useContext(Context);
+    const {signup,state,Userdetils} =useContext(Context);
 
     const reference = storage().ref('black-t-shirt-sm.png');
      const [isLoading,setIsloading]=useState(false)
      const [fname,setFName]=useState('');
      const [lname,setLName]=useState('');
      const [email,setEmail]=useState('');
-     //const [gender,setGender]=useState('');
+     const [gender,setGender]=useState('');
      const [dob,setDob]=useState('');
      const [password,setPassword]=useState('');
      const [comfirmpassword,setComfirmpassword]=useState('');
      const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-     const[male,setMale]=useState(false);
-     const[female,setFemale]=useState(false);
-     const[other,setOther]=useState(false);
      const [image,setImage]=useState(null);
      const [show,setShow]=useState(true)
+    console.log(gender);
 
      const handleConfirm = (date) => {
         setDob(moment(date).format('DD-MM-YYYY'))
@@ -43,21 +42,6 @@ import { Context } from '../context/FStoreContext'
       const hideDatePicker = () => {
         setDatePickerVisibility(false);
       };
-      const onMale=()=>{
-        setMale(!male)
-        setFemale(false)
-        setOther(false)
-      }
-      const onfemale=()=>{
-        setFemale(!female)
-        setOther(false);
-        setMale(false)
-      }
-      const onother =()=>{
-          setOther(!other)
-          setFemale(false);
-          setMale(false)
-      }
 
       const onSignUpPress = () =>{navigation.navigate('SignIn')}
 
@@ -69,7 +53,6 @@ import { Context } from '../context/FStoreContext'
           }).then(image => {
              const uriImage=image.sourceURL;
               setImage(uriImage)
-              postImage()
           });
       }
 
@@ -88,41 +71,17 @@ import { Context } from '../context/FStoreContext'
             alert('Enter the valid Email')
         }else if(dob==''){
             alert('Enter the Date of birthday')
+        }else if(gender==''){
+            alert('seclect a gender')
         }else if(password==''){
             alert("Enter the password")
         }else if(password!==comfirmpassword){
             alert('Passwords must be same')
         }else{
             const imageUrl = await uploadImage();
-            setIsloading(true)
-            firestore().collection("user").add({
-                Image:imageUrl,
-                FirstName:fname,
-                LastName:lname,
-                Email:email,
-                Dob:dob,
-                password:password,
-                male:male,
-                female:female,
-                other:other
-            })
-            .then(() => {
-                setFName('');
-                setLName('');
-                setPassword('');
-                setComfirmpassword('');
-                setDob('');
-                setEmail('');
-                setMale(false);
-                setFemale(false);
-                setOther(false);
-                setIsloading(false)
-                alert("Document written with ID:");
-                addUser(fname,lname,dob,image,male,female,other,email)
-            })
-            .catch(() => {
-                alert("Error adding document: ");
-            });
+            Userdetils(fname,lname,dob,imageUrl,gender,email);
+            signup(email,password)
+            
         }
      }
      const uploadImage = async () => {
@@ -152,7 +111,7 @@ import { Context } from '../context/FStoreContext'
 
      return (
          <SafeAreaView style={styles.continer}>
-         <ScrollView >
+         <KeyboardAwareScrollView >
             <View style={styles.header}>
                 <Text style={{fontSize:24,}}>Sign Up</Text>
             </View>
@@ -167,7 +126,7 @@ import { Context } from '../context/FStoreContext'
                     <Image style={{width:60,height:60,marginLeft:10}} source={require('../Image/camera.png')||{uri:image}}/>
                     }
                 </TouchableOpacity>
-
+            
                <TextInput placeholder='First_Name*' value={fname} onChangeText={(fname)=>setFName(fname)}/>
                <TextInput placeholder='Last_Name' value={lname} onChangeText={(lname)=>setLName(lname)}/>
                <TextInput placeholder='Email*' value={email} onChangeText={(email)=>setEmail(email)}/>
@@ -179,9 +138,9 @@ import { Context } from '../context/FStoreContext'
                </TouchableOpacity>
                <Text style={{marginHorizontal:10,marginBottom:10,color:'rgb(120, 120, 120)',fontSize:18}}>Gender</Text>
                <View style={{flexDirection:'row',marginHorizontal:10,marginBottom:10}}>
-                <Checkbox label='Male' onChange={onMale} checked={male}/>
-                <Checkbox label='FeMale' onChange={onfemale} checked={female}/>
-                <Checkbox label='Other' onChange={onother} checked={other}/>
+                <Checkbox label='Male' onChange={()=>setGender('male')} checked={gender=='male'}/>
+                <Checkbox label='FeMale' onChange={()=>setGender('female')} checked={gender=='female'}/>
+                <Checkbox label='Other' onChange={()=>setGender('other')} checked={gender=='other'}/>
                </View>
                <TextInput placeholder='Password*' value={password} onChangeText={(password)=>setPassword(password)}/>
                <TextInput placeholder='Confirm Password*' value={comfirmpassword} secureTextEntry={show} onChangeText={(comfirmpassword)=>setComfirmpassword(comfirmpassword)}/>
@@ -202,10 +161,11 @@ import { Context } from '../context/FStoreContext'
             <DateTimePickerModal
                 isVisible={isDatePickerVisible}
                 mode="date"
+                maximumDate={new Date()}
                 onConfirm={handleConfirm}
                 onCancel={hideDatePicker}
             />
-         </ScrollView>
+         </KeyboardAwareScrollView>
          </SafeAreaView>
      )
  }

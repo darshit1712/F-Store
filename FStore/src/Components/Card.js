@@ -46,11 +46,11 @@ const styles = StyleSheet.create({
         backgroundColor:"#fff",
         marginBottom:10,
         marginHorizontal:'2%',
-        shadowOpacity:1,
+        shadowOpacity:0.2,
         shadowColor:'#000',
         shadowOffset:{
             width:0,
-            height: 3,
+            height: 1,
         },
     }
 })

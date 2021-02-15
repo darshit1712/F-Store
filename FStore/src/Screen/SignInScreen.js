@@ -7,45 +7,37 @@ import storage,{firebase} from '@react-native-firebase/storage';
 import { Context } from '../context/FStoreContext'
 
 const SignInScreen = ({navigation}) => {
-const {signIn,state} =useContext(Context);
+const {signIn,state,Getuser} =useContext(Context);
 const [email,setEmail]=useState('');
 const [password,setPassword]=useState('');
 const [show,setShow]=useState(true);
 const [emaileroor,setEmailError]=useState(true);
-const [lists, setLists] = useState([])
+const [lists, setLists] = useState([]);
 
-// lists.map(e=>{ 
-//     console.log(e.Email)
-// })
+
 
 useEffect(() => {
-    firebase
-    .firestore()
-    .collection("user")
-    .onSnapshot(snapshot => {
-      const lists = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-      }))
-      setLists(lists)
-    })
+    Getuser()
   }, [])
   
 
 const onSumbmitNavigation=(email,password)=>{
-    signIn(email,password);
+    const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if(email==''){
+        alert('Enter the email')
+    }else if(password==''){
+        alert('password is not correct')
+    }else if (reg.test(email) !== true){
+        alert('Enter the valid Email')
+    }else {
+       state.user.map(e=>{
+           if(e.Email===email){
+               signIn(email,password)
+            }
+        
+        })
+    }
 }
-const onSubmit =()=>{
-    
-    // const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; //email validation
-    //     if (reg.test(email) === emaileroor){
-    //         setEmailError(true);
-    //     }
-    //     else{
-    //         alert('Enter the Valid Email')
-    //     }
-}
-
     return (
         <SafeAreaView style={styles.contioner}>
          
@@ -72,8 +64,6 @@ const onSubmit =()=>{
                     type='outline' 
                     onPress={()=>{
                         onSumbmitNavigation(email,password);
-                        //onSubmit();
-
                   }}/>
             </View>
             <View style={styles.footer}>

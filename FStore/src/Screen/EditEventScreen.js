@@ -17,12 +17,12 @@ import { Context } from '../context/FStoreContext'
 
 
 const EditEventScreen = ({navigation}) => {
-  const {addstore,state} =useContext(Context);
+  const {addstore,state,Eventdetils} =useContext(Context);
 
   const [isLoading,setIsloading]=useState(false)
   const [image,setImage]=useState(null)
   const [title,setTitle]=useState('')
-  const [descripation,setDescripation]=useState('')
+  const [description,setDescription]=useState('')
   const [place,setPlace]=useState('')
   const [date,setDate]=useState('')
   const [quest,setQuest]=useState('')
@@ -56,7 +56,7 @@ const EditEventScreen = ({navigation}) => {
         alert('place add to image')
     }else if(title==''){
       alert('Add to Title');
-    }else if(descripation == ''){
+    }else if(description == ''){
       alert('Add to descripation');
     }else if(place == ''){
       alert('Add to place');
@@ -66,28 +66,10 @@ const EditEventScreen = ({navigation}) => {
       alert('Add to Data');
     }else {
       const imageUrl = await uploadImage();
-      firestore().collection("UserEvent").add({
-        Title:title,
-        Descripation:descripation,
-        Place:place,
-        date:date,
-        Quest:quest,
-        image:imageUrl
-    })
-    .then(() => {
-        setTitle('');
-        setDescripation('');
-        setDate('');
-        setPlace('');
-        setQuest('');
-        setIsloading(false)
-        alert("All Data is Save ");
-        addstore(title,descripation,place,quest,date,image)
-  
-    })
-    .catch(() => {
-        alert("Place Add to data ");
-    });
+
+      Eventdetils(title,description,place,quest,date,imageUrl)
+     // addstore(title,descripation,place,quest,date,image)
+         
     }
   }
   const uploadImage = async () => {
@@ -134,7 +116,7 @@ const EditEventScreen = ({navigation}) => {
         </View>
         <View style={{flex:3,marginHorizontal:20}}>
             <TextInput label='Title' placeholder='Title' value={title} onChangeText={(title)=>setTitle(title)}/>
-            <TextArea label='Descripation' placeholder='Descripation' multiline={true} numberOfLines={5} value={descripation} onChangeText={(descripation)=>setDescripation(descripation)}/>
+            <TextArea label='Description' placeholder='Description' multiline={true} numberOfLines={5} value={description} onChangeText={(description)=>setDescription(description)}/>
             <TextInput label='Place' placeholder='Place' value={place} onChangeText={(place)=>setPlace(place)}/>
             <Text style={{marginHorizontal:10,fontSize:16,color:'#4d4d4d'}}>Date</Text>
             <TouchableOpacity style={{marginBottom:20,marginVertical:10,borderBottomWidth:0.4,marginHorizontal:10}} onPress={showDatePicker}>

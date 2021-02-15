@@ -16,29 +16,12 @@ const EditeProfileScreen = ({navigation}) => {
   const [lname,setLName]=useState('');
   const [email,setEmail]=useState('');
   const [dob,setDob]=useState('');
+  const[gender,setGender]=useState('')
   const [password,setPassword]=useState('');
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const[male,setMale]=useState(false);
-  const[female,setFemale]=useState(false);
-  const[other,setOther]=useState(false);
   const [image,setImage]=useState('http://www.pngall.com/wp-content/uploads/5/Profile-Male-PNG.png')
 
-  const onMale=()=>{
-    setMale(male==false ? true:false )
-    setFemale(false)
-    setOther(false)
-  }
-  const onfemale=()=>{
-    setFemale(female==false ? true:false)
-    setOther(false);
-    setMale(false)
-  }
-  const onother =()=>{
-      setOther(other==false?true:false)
-      setFemale(false);
-      setMale(false)
-  }
-
+ 
   const handleConfirm = (date) => {
     setDob(moment(date).format('DD-MM-YYYY'))
     hideDatePicker();
@@ -97,9 +80,9 @@ const EditeProfileScreen = ({navigation}) => {
            </TouchableOpacity>
            <Text style={{marginHorizontal:10,marginTop:10,marginBottom:10,color:'rgb(120, 120, 120)',fontSize:18}}>Gender</Text>
                <View style={{flexDirection:'row',marginHorizontal:10,marginBottom:20}}>
-                <Checkbox label='Male' onChangeText={onMale} checked={male}/>
-                <Checkbox label='FeMale' onChangeText={onfemale} checked={female}/>
-                <Checkbox label='Other' onChangeText={onother} checked={other}/>
+                <Checkbox label='Male' onChange={()=>setGender('male')} checked={gender=='male'}/>
+                <Checkbox label='FeMale' onChange={()=>setGender('female')} checked={gender=='female'}/>
+                <Checkbox label='Other' onChange={()=>setGender('other')} checked={gender=='other'}/>
                </View>
           <TextInput label='Password' placeholder="Change Password" value={password} onChangeText={(password)=>setPassword(password)}/>
           <Btn title="Save"/>
@@ -108,6 +91,7 @@ const EditeProfileScreen = ({navigation}) => {
         <DateTimePickerModal
                 isVisible={isDatePickerVisible}
                 mode="date"
+                maximumDate={new Date()}
                 onConfirm={handleConfirm}
                 onCancel={hideDatePicker}
             />

@@ -7,6 +7,7 @@ import TextInput from '../Components/TextInput';
 import { Context } from '../context/FStoreContext'
 import storage,{firebase} from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
+import Btn from '../Components/Btn';
 
 
 const EventScreen = ({route,navigation}) => {
@@ -37,6 +38,7 @@ const EventScreen = ({route,navigation}) => {
                 <TextInput label="Place" placeholder='Place' value={state.place}/>
                 <TextInput label="Date" placeholder='Date' value={state.date}/>
                 <TextInput label="Quest" placeholder='Quest' value={state.quest}/>
+               
             </View>
         </ScrollView>
     </SafeAreaView>
