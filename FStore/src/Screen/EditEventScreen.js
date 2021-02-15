@@ -136,6 +136,7 @@ const EditEventScreen = ({navigation}) => {
       <DateTimePickerModal
                 isVisible={isDatePickerVisible}
                 mode="date"
+                maximumDate={new Date()}
                 onConfirm={handleConfirm}
                 onCancel={hideDatePicker}
             />
