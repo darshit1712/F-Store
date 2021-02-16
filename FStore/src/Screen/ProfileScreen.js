@@ -15,13 +15,38 @@ import Checkbox from '../Components/Checkbox';
 import {Context} from '../context/FStoreContext';
 
 const ProfileScreen = ({navigation}) => {
-  const {signout,state} = useContext(Context);
-
-  console.log(state.userData);
+  const {signout,state,gettoken,Getuser} = useContext(Context);
+  const[fname,setFname]=useState('');
+  const[lname,setLname]=useState('');
+  const[dob,setDob]=useState('');
+  const[email,setEmail]=useState('');
+  const[gender,setGender]=useState('');
+  const[image,setImage]=useState(null);
+  
 useEffect(() => {
+  gettoken();
+  Getuser();
+  if(state.updates==undefined){
+    state.user.map(e=>{
+      if(e.Email===state.userData){
+         setImage(e.Image)
+         setFname(e.FirstName)
+         setLname(e.LastName)
+         setEmail(e.Email)
+         setDob(e.Dob)
+         setGender(e.Gender)
+       }
+   });
+  }else{
+    setImage(state.updates.imageUrl)
+    setFname(state.updates.fname)
+    setLname(state.updates.lname)
+    setEmail(state.updates.email)
+    setDob(state.updates.dob)
+    setGender(state.updates.gender)
+  }
  
-}, [state.userData])
-
+},[state.updates])
   return (
     <SafeAreaView style={styles.contioner}>
       <CustomHeader
@@ -38,7 +63,7 @@ useEffect(() => {
           <View>
             <Image
               style={{height: 150, width: 150, borderRadius: 200}}
-              source={{uri:'http://www.pngall.com/wp-content/uploads/5/Profile-Male-PNG.png' }}
+              source={{uri: image }}
             />
           </View>
         </View>
@@ -46,25 +71,25 @@ useEffect(() => {
           <TextInput
             label="First Name"
             placeholder="First Name"
-            //value={state.fname}
+            value={fname}
             editable={false}
           />
           <TextInput
             label="Last Name"
             placeholder="First Name"
-           // value={state.lname}
+            value={lname}
             editable={false}
           />
           <TextInput
             label="Email"
-            placeholder={state.userData||'as'}
-           // value={state.email}
+            placeholder='Enter the Email'
+            value={email}
             editable={false}
           />
           <TextInput
             label="Date of birthday"
             placeholder="DD-MM-YYYY"
-            //value={state.detils.dob}
+            value={dob}
             editable={false}
           />
           <Text
@@ -82,19 +107,15 @@ useEffect(() => {
               marginHorizontal: 10,
               marginBottom: 20,
             }}>
-                <Checkbox label='Male'
-                  //checked={'male'}
-
-                  />
-                <Checkbox label='FeMale'  
-                //checked={'female'}
-
+              <Checkbox label='Male'
+                checked={gender=='male'}
                 />
-                <Checkbox label='Other' 
-               // checked={'other'}
-
-                />
-             
+              <Checkbox label='FeMale'  
+              checked={gender=='female'}
+              />
+              <Checkbox label='Other' 
+                checked={gender=='other'}
+              />
           </View>
 
           <Btn title='Log Out' onPress={()=> signout()}/>

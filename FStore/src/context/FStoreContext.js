@@ -14,26 +14,12 @@ const storeReducer = (state, action) => {
       //    return action.payload;
       // case 'add_detile':
       //   return action.user;
+      case 'UPDATE_USER' :
+        return {...state,updates:action.payload};
       case 'USER_DETAILS':
         return {...state,user:action.payload};
-        case 'ADD_USER':
+      case 'ADD_USER':
           return {...state,userData:action.payload};
-      case 'LOGIN': 
-         return {
-           ...state,
-           email: action.email,
-           password:action.password
-         };
-       case 'LOGOUT': 
-         return {
-           ...state,
-           email: null,
-         };
-       case 'REGISTER': 
-        return {
-          ...State,
-          email: action.email,
-        };
     default:
       return state;
   }
@@ -57,7 +43,22 @@ const Userdetils=(dispatch)=>{
             });
   }
 }
-
+const UpadataUsedetils =(dispatch)=>{
+  return async(fname,lname,email,imageUrl,dob,gender,id)=>{
+    const update={fname,lname,email,imageUrl,dob,gender,id}
+        firestore().collection("user").doc(`${id}`).update({
+            FirstName: fname,
+            LastName: lname,
+            Email: email,
+            Dob:dob,
+            Gender:gender,
+            Image:imageUrl,
+        }).then(() => {
+          dispatch({type:'UPDATE_USER',payload:update})
+          alert('You have Data Successfully Add')
+        })
+  }
+}
 const Getuser=(dispatch)=>{
   return()=>{
     firebase
@@ -72,7 +73,6 @@ const Getuser=(dispatch)=>{
     })
   }
 }
-  
 const Eventdetils=(dispatch)=>{
   return(title,description,place,quest,date,imageUrl)=>{
     firestore().collection("UserEvent").add({
@@ -92,7 +92,6 @@ const Eventdetils=(dispatch)=>{
 
   }
 }
-
 const addUser = (dispatch) => {
   return  (fname,lname,dob,image,male,female,other,email) => {
       const user={fname,lname,dob,image,male,female,other,email}
@@ -106,7 +105,6 @@ const addstore = (dispatch) => {
       
   };
 };
-
 const signup=(dispatch)=>{
   return async(email,password)=>{
     try {
@@ -116,42 +114,44 @@ const signup=(dispatch)=>{
     }
   }
 }
-
   const signIn = (dispatch) => {
     return  async(email,password) => {  
-      console.log(email,password)  
       try {
         await auth().signInWithEmailAndPassword(email, password)
-        
-        dispatch({type:'ADD_USER' ,payload:email})
-        console.log(email)
+        try {
+          await AsyncStorage.setItem("userData", JSON.stringify(email));
+       } catch (error) {
+         console.log("Something went wrong", error);
+       }
      } catch (e) {
        alert('Enter the valid email and password')
      }
     };
   };
-
   const signout = (dispatch) => {
     return async() => {
       auth().signOut()
+      await AsyncStorage.removeItem('userData');
     };
   };
-
   const gettoken = (dispatch) => {
     return async() => {
       try {
-        await AsyncStorage.getItem('Token');
+          let userData = await AsyncStorage.getItem("userData");
+          let data = JSON.parse(userData);
+          dispatch({type:'ADD_USER' ,payload:data})
       } catch(e) {
         console.log("get",e);
       }
-      // console.log('user token: ', userToken);
-      dispatch({ type: 'REGISTER', email: email });
     };
-  };
- 
- 
+  }; 
   export const { Context, Provider } = createDataContext(
     storeReducer,
-    {addstore,addUser,signIn,signout,gettoken,Userdetils,Eventdetils,Getuser,signup},
+    {addstore,addUser,
+      signIn,signout,
+      gettoken,Userdetils,
+      Eventdetils,Getuser,
+      signup,UpadataUsedetils,
+    },
     [],
   ); 

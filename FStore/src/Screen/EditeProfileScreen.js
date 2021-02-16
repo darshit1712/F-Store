@@ -1,5 +1,5 @@
-import React,{useState} from 'react';
-import {SafeAreaView, StyleSheet, Text, View,Image,} from 'react-native';
+import React,{useState,useContext,useEffect} from 'react';
+import {SafeAreaView, StyleSheet, Text, View,Image,ActivityIndicator} from 'react-native';
 import {   TouchableOpacity } from 'react-native-gesture-handler';
 import Btn from '../Components/Btn';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -9,9 +9,14 @@ import Checkbox from '../Components/Checkbox';
 import moment from 'moment'
 import ImagePicker from 'react-native-image-crop-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import {Context} from '../context/FStoreContext';
+import storage,{firebase} from '@react-native-firebase/storage';
+import firestore from '@react-native-firebase/firestore';
 
 
 const EditeProfileScreen = ({navigation}) => {
+  const {state,gettoken,Getuser,UpadataUsedetils} = useContext(Context);
+  const[id,setId]=useState('')
   const [fname,setFName]=useState('');
   const [lname,setLName]=useState('');
   const [email,setEmail]=useState('');
@@ -19,9 +24,24 @@ const EditeProfileScreen = ({navigation}) => {
   const[gender,setGender]=useState('')
   const [password,setPassword]=useState('');
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [image,setImage]=useState('http://www.pngall.com/wp-content/uploads/5/Profile-Male-PNG.png')
+  const [image,setImage]=useState(null);
+  const [isLoading,setIsloading]=useState(false)
+  useEffect(() => {
+    gettoken()
+    Getuser()
+    state.user.map(e=>{
+      if(e.Email===state.userData){
+        setId(e.id)
+        setFName(e.FirstName)
+        setLName(e.LastName)
+        setEmail(e.Email)
+        setDob(e.Dob)
+        setGender(e.Gender)
+        setImage(e.image)
+      }
+  })
+  },[])
 
- 
   const handleConfirm = (date) => {
     setDob(moment(date).format('DD-MM-YYYY'))
     hideDatePicker();
@@ -41,9 +61,38 @@ const EditeProfileScreen = ({navigation}) => {
       height: 400,
       cropping: true
     }).then(image => {
-      setImage(image.path)
+      setImage(image.sourceURL)
     });
   }
+  const onUpdate=async()=>{
+    const imageUrl = await uploadImage();
+    UpadataUsedetils(fname,lname,email,imageUrl,dob,gender,id)
+  }
+
+  const uploadImage = async () => {
+    if( image == null ) {
+      return null;
+    }
+    const uploadUri = image;
+    let filename = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
+
+    const extension = filename.split('.').pop(); 
+    const name = filename.split('.').slice(0, -1).join('.');
+    filename = name + Date.now() + '.' + extension;
+
+    const storageRef = firebase.storage().ref(`User/${filename}`);
+    const task = storageRef.putFile(uploadUri)
+    try {
+      setIsloading(true)
+      await task;
+      const url = await storageRef.getDownloadURL();
+      setIsloading(false)
+      return url;
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
+  };
 
   return (
     <SafeAreaView style={styles.contioner}>
@@ -57,11 +106,14 @@ const EditeProfileScreen = ({navigation}) => {
       />
       <KeyboardAwareScrollView>
       <View style={{flex: 1,alignItems:'center',justifyContent:'center',}}>
+      {isLoading && <ActivityIndicator size="large" style={styles.loadingIndicator} />}
+
           <View>
-            <Image
+          {image !=null ? <Image
             style={{height:150,width:150,borderRadius:200}}
             source={{uri:image}}
-          />
+          />:null}
+           
           </View>
           <TouchableOpacity  onPress={onAddImage}>
               <Text style={{color:'#1abc9c',marginTop:5}}>Edit profile</Text>
@@ -85,7 +137,7 @@ const EditeProfileScreen = ({navigation}) => {
                 <Checkbox label='Other' onChange={()=>setGender('other')} checked={gender=='other'}/>
                </View>
           <TextInput label='Password' placeholder="Change Password" value={password} onChangeText={(password)=>setPassword(password)}/>
-          <Btn title="Save"/>
+          <Btn title="Save" onPress={()=>onUpdate()}/>
         </View>
       </KeyboardAwareScrollView>
         <DateTimePickerModal

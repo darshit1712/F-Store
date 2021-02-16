@@ -42,11 +42,6 @@ const HomeScreen = ({navigation}) => {
           navigation.openDrawer();
         }}
         lefticons={require('../Image/menu.png')}
-        righticons={require('../Image/logout.png')}
-        navigate={() => {
-          signout();
-        }}
-
       />
      
       <Search  

@@ -1,6 +1,6 @@
 import React,{useState,useEffect,useContext} from 'react'
-import { SafeAreaView, StyleSheet, Text, View,Image} from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { SafeAreaView, StyleSheet, Text, View,Image,Alert} from 'react-native'
+import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import Btn from '../Components/Btn';
 import TextInput from '../Components/TextInput'
 import storage,{firebase} from '@react-native-firebase/storage';
@@ -10,8 +10,7 @@ const SignInScreen = ({navigation}) => {
 const {signIn,state,Getuser} =useContext(Context);
 const [email,setEmail]=useState('');
 const [password,setPassword]=useState('');
-const [show,setShow]=useState(true);
-const [emaileroor,setEmailError]=useState(true);
+const [show,setShow]=useState(false);
 const [lists, setLists] = useState([]);
 
 
@@ -33,8 +32,8 @@ const onSumbmitNavigation=(email,password)=>{
        state.user.map(e=>{
            if(e.Email===email){
                signIn(email,password)
+              
             }
-        
         })
     }
 }
@@ -58,8 +57,7 @@ const onSumbmitNavigation=(email,password)=>{
                   value={password}
                   onChangeText={(password)=>setPassword(password)}
                   secureTextEntry={show}
-                  />
-                  {/* <Text style={styles.errorText}>Authentication is Fail</Text> */}
+                  />                  
                   <Btn title='Sign In' 
                     type='outline' 
                     onPress={()=>{

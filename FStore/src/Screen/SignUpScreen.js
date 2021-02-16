@@ -28,8 +28,6 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
      const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
      const [image,setImage]=useState(null);
      const [show,setShow]=useState(true)
-    console.log(gender);
-
      const handleConfirm = (date) => {
         setDob(moment(date).format('DD-MM-YYYY'))
         hideDatePicker();
@@ -57,7 +55,6 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
       }
 
       const onsubmit= async(e)=>{
-    
         const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; //email validation
         if(image== ''){
             alert('place add image')
@@ -80,7 +77,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
         }else{
             const imageUrl = await uploadImage();
             Userdetils(fname,lname,dob,imageUrl,gender,email);
-            signup(email,password)
+            signup(email,password,)
             
         }
      }
