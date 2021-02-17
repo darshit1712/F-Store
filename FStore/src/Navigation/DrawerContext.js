@@ -10,18 +10,14 @@ const DrawerContext = (props) => {
     useEffect(() => {
         gettoken();
         Getuser();
+      
         if(state.updates==undefined){
-          state.user.map((item)=>{
-            if(item.Email===state.userData){
-               setImage(item.Image)
-               setFname(item.FirstName)
-             }
-         });
+           setFname('xyz')
+           setImage('https://lh3.googleusercontent.com/proxy/-jQtGsgPX8qJ6gX21wn0y6p3Ovp8gvw_CYJ6oohRW8PGYMkSRmOw6Yw3D0OTHQDWocufsNN3OimOOJWTu5Js9qLuIzEkiK_QLtxTuYfpEw0xHVkOzqk5')
         }else{
           setImage(state.updates.imageUrl)
           setFname(state.updates.fname)
-        }
-       
+        }  
       },[state.updates])
     return (
         <SafeAreaView style={{flex:1,justifyContent:'space-around'}}>

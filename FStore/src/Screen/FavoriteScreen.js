@@ -46,7 +46,7 @@ const FavoriteScreen = ({route,navigation}) => {
                         if(serach==""){
                             return e;
                            }else if( e.date.toString().includes(serach.toString()) ||
-                           e.descripation.includes(serach) ||
+                           e.description.includes(serach) ||
                            e.title.includes(serach) ||
                            e.place.includes(serach) ){
                                return item;
@@ -59,7 +59,7 @@ const FavoriteScreen = ({route,navigation}) => {
             like={like}
             image={item.image}
             title={item.Title}
-            descripation={item.Descripation}
+            description={item.Description}
             onPress={()=>setLike(!like)}
             date={item.date}
             place={item.Place}

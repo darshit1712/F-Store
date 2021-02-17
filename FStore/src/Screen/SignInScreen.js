@@ -1,6 +1,6 @@
 import React,{useState,useEffect,useContext} from 'react'
-import { SafeAreaView, StyleSheet, Text, View,Image,Alert} from 'react-native'
-import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
+import { SafeAreaView, StyleSheet, Text, View,Image,Alert,ActivityIndicator} from 'react-native'
+import {TouchableOpacity } from 'react-native-gesture-handler';
 import Btn from '../Components/Btn';
 import TextInput from '../Components/TextInput'
 import storage,{firebase} from '@react-native-firebase/storage';
@@ -10,11 +10,8 @@ const SignInScreen = ({navigation}) => {
 const {signIn,state,Getuser} =useContext(Context);
 const [email,setEmail]=useState('');
 const [password,setPassword]=useState('');
-const [show,setShow]=useState(false);
-const [lists, setLists] = useState([]);
-
-
-
+const [show,setShow]=useState(true);
+const [isLoading,setIsloading]=useState(false)
 useEffect(() => {
     Getuser()
   }, [])
@@ -32,18 +29,15 @@ const onSumbmitNavigation=(email,password)=>{
        state.user.map(e=>{
            if(e.Email===email){
                signIn(email,password)
-              
             }
         })
     }
 }
     return (
         <SafeAreaView style={styles.contioner}>
-         
             <View style={styles.logoStyle}>
             <Image  style={{width:150,height:150,resizeMode:'contain'}} source={require('../Image/logo.jpeg')}/>
             </View>
-            
             <View style={styles.content}>
                 <TextInput 
                   label='Email'
@@ -64,6 +58,7 @@ const onSumbmitNavigation=(email,password)=>{
                         onSumbmitNavigation(email,password);
                   }}/>
             </View>
+             {isLoading && <ActivityIndicator size="large" style={styles.loadingIndicator} />}
             <View style={styles.footer}>
                 <Text style={{color:'#000'}}>
                     Don't have a Account??

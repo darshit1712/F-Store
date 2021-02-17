@@ -10,10 +10,11 @@ import { Context } from '../context/FStoreContext'
 const HomeScreen = ({navigation}) => {
   const {signout,state} =React.useContext(Context);
 
-  const [like, setLike] = useState(true);
+  const [like, setLike] = useState(false);
   const [serach, setSerach] = useState('');
   const [lists, setLists] = useState([])
   const [isLoading,setIsloading]=useState(false)
+  
 
   useEffect(() => {
 
@@ -31,8 +32,11 @@ const HomeScreen = ({navigation}) => {
   
 
   const onlike = (e) => {
-    const checked=e.like
-    //console.log(checked);
+    if(e){
+      setLike(!like)
+    }else if(like===false){
+      setLike(!like)
+    }
   };
   return (
     <SafeAreaView style={styles.container}>
@@ -65,15 +69,16 @@ const HomeScreen = ({navigation}) => {
           </ScrollView> */}
 
       <FlatList 
-        data={lists.filter((item)=>{
-                        if(serach==""){
-                            return item;
-                           }else if( item.date.toString().includes(serach.toString()) ||
-                           item.descripation.includes(serach) ||
-                           item.title.includes(serach) ||
-                           item.place.includes(serach) ){
-                               return item;
-                       }})
+        data={lists
+        // .filter((item)=>{
+        //                 if(serach==""){
+        //                     return item;
+        //                    }else if( item.date.toString().includes(serach.toString()) ||
+        //                    item.description.includes(serach) ||
+        //                    item.title.includes(serach) ||
+        //                    item.place.includes(serach) ){
+        //                        return item;
+        //                }})
         }
         keyExtractor={(item)=>item.id}
         renderItem={({item})=>{
@@ -82,8 +87,8 @@ const HomeScreen = ({navigation}) => {
             like={like}
             image={item.image}
             title={item.Title}
-            descripation={item.Descripation}
-            onPress={onlike(item)}
+            description={item.Description}
+            onPress={(e)=>onlike(e)}
             date={item.date}
             place={item.Place}
         />)}}

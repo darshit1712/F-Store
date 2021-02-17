@@ -612,14 +612,14 @@ PODS:
     - React
   - RNDateTimePicker (3.0.9):
     - React-Core
-  - RNFBApp (10.7.0):
+  - RNFBApp (10.8.0):
     - Firebase/CoreOnly (~> 7.6.0)
     - React-Core
   - RNFBAuth (10.8.0):
     - Firebase/Auth (~> 7.6.0)
     - React-Core
     - RNFBApp
-  - RNFBFirestore (10.7.0):
+  - RNFBFirestore (10.8.0):
     - Firebase/Firestore (~> 7.6.0)
     - React-Core
     - RNFBApp
@@ -880,9 +880,9 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: b03032fdbdb725bea0bd9e5ec5a7272865ae7398
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNDateTimePicker: 8a51a2216c307769e69ef827293d59549ab1ca23
-  RNFBApp: d75aa9756bca20df2c902a3f7e11bc276f03c65b
+  RNFBApp: 97b618641633d6d23187a9d0537c3893482c483f
   RNFBAuth: 7c6c9e7289d98709cd5d1333d829925f81823375
-  RNFBFirestore: a767270f495a44465dda98de30ad4ea4b82f091e
+  RNFBFirestore: 859fc78b3dc89ef10e430b39cd9f14e07ef4e158
   RNFBStorage: 3d87e4ee72171f84178d76810eac26118e2b8396
   RNGestureHandler: 9b7e605a741412e20e13c512738a31bd1611759b
   RNImageCropPicker: 08ba3a2e2f4f8833d606f01906c371e382c4dea9

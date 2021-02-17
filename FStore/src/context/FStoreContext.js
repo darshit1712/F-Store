@@ -10,8 +10,8 @@ const storeReducer = (state, action) => {
   switch (action.type) {
       //  case 'ADD_UserDetils' :
       //     return action.payload ;
-      //  case 'add_store':
-      //    return action.payload;
+       case 'ADD_EVENT':
+         return {...state,event:action.payload};
       // case 'add_detile':
       //   return action.user;
       case 'UPDATE_USER' :
@@ -75,6 +75,9 @@ const Getuser=(dispatch)=>{
 }
 const Eventdetils=(dispatch)=>{
   return(title,description,place,quest,date,imageUrl)=>{
+    const data={title,place,description,date,quest,imageUrl}
+    dispatch({type:'ADD_EVENT',payload:data});
+
     firestore().collection("UserEvent").add({
       Title:title,
       Description:description,
@@ -98,13 +101,13 @@ const addUser = (dispatch) => {
       dispatch({ type: 'add_detile' , user : user})
   };
 };
-const addstore = (dispatch) => {
-  return  (title,place,descripation,date,quest,image) => {
-      const data={title,place,descripation,date,quest,image}
-      dispatch({ type: 'add_store' ,payload : data});
+// const addstore = (dispatch) => {
+//   return  (title,place,descripation,date,quest,image) => {
+//       const data={title,place,descripation,date,quest,image}
+//       dispatch({ type: 'add_store' ,payload : data});
       
-  };
-};
+//   };
+// };
 const signup=(dispatch)=>{
   return async(email,password)=>{
     try {
@@ -147,7 +150,8 @@ const signup=(dispatch)=>{
   }; 
   export const { Context, Provider } = createDataContext(
     storeReducer,
-    {addstore,addUser,
+    {
+      addUser,
       signIn,signout,
       gettoken,Userdetils,
       Eventdetils,Getuser,

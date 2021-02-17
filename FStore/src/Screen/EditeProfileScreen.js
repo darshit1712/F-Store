@@ -24,8 +24,9 @@ const EditeProfileScreen = ({navigation}) => {
   const[gender,setGender]=useState('')
   const [password,setPassword]=useState('');
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [image,setImage]=useState(null);
+  const [image,setImage]=useState();
   const [isLoading,setIsloading]=useState(false)
+
   useEffect(() => {
     gettoken()
     Getuser()
@@ -37,7 +38,7 @@ const EditeProfileScreen = ({navigation}) => {
         setEmail(e.Email)
         setDob(e.Dob)
         setGender(e.Gender)
-        setImage(e.image)
+        setImage(e.Image)
       }
   })
   },[])
@@ -66,12 +67,15 @@ const EditeProfileScreen = ({navigation}) => {
   }
   const onUpdate=async()=>{
     const imageUrl = await uploadImage();
-    UpadataUsedetils(fname,lname,email,imageUrl,dob,gender,id)
+    if(imageUrl==null){
+      UpadataUsedetils(fname,lname,email,image,dob,gender,id)
+    }else{
+      UpadataUsedetils(fname,lname,email,imageUrl,dob,gender,id)
+    }
   }
-
   const uploadImage = async () => {
-    if( image == null ) {
-      return null;
+    if( image === null ) {
+      return image;
     }
     const uploadUri = image;
     let filename = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
@@ -83,14 +87,11 @@ const EditeProfileScreen = ({navigation}) => {
     const storageRef = firebase.storage().ref(`User/${filename}`);
     const task = storageRef.putFile(uploadUri)
     try {
-      setIsloading(true)
       await task;
       const url = await storageRef.getDownloadURL();
-      setIsloading(false)
       return url;
     } catch (e) {
       console.log(e);
-      return null;
     }
   };
 
@@ -109,11 +110,10 @@ const EditeProfileScreen = ({navigation}) => {
       {isLoading && <ActivityIndicator size="large" style={styles.loadingIndicator} />}
 
           <View>
-          {image !=null ? <Image
+           <Image
             style={{height:150,width:150,borderRadius:200}}
             source={{uri:image}}
-          />:null}
-           
+          />
           </View>
           <TouchableOpacity  onPress={onAddImage}>
               <Text style={{color:'#1abc9c',marginTop:5}}>Edit profile</Text>
