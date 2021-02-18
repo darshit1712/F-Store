@@ -1,11 +1,10 @@
 import React,{useState,useEffect} from 'react'
 import { SafeAreaView, StyleSheet, Text, View,FlatList} from 'react-native'
-import {  ScrollView } from 'react-native-gesture-handler'
-import { Colors } from 'react-native/Libraries/NewAppScreen'
 import Card from '../Components/Card'
 import CustomHeader from '../Components/CustomHeader'
 import Search from '../Components/Search'
 import storage,{firebase} from '@react-native-firebase/storage';
+import images from '../utility/ImageConst'
 
 const FavoriteScreen = ({route,navigation}) => {
 //    const  {data}= route.params.data;
@@ -36,7 +35,7 @@ const FavoriteScreen = ({route,navigation}) => {
     
     return (
         <SafeAreaView style={styles.contioner}>
-        <CustomHeader title='Favorit' lefticons={require('../Image/menu.png')} navigation={()=>{navigation.openDrawer()}} />
+        <CustomHeader title='Favorit' lefticons={images.menu} navigation={()=>{navigation.openDrawer()}} />
         <Search  
           placeholder='Serach'
           value={serach}

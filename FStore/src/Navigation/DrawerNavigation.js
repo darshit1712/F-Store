@@ -10,7 +10,7 @@ import FavoriteScreen from '../Screen/FavoriteScreen'
 import EditeProfileScreen from '../Screen/EditeProfileScreen';
 import EditEventScreen from '../Screen/EditEventScreen'
 import DrawerContext from './DrawerContext';
-
+import images from '../utility/ImageConst';
 function HomeStack (){
     return(
       <Stack.Navigator initialRouteName='Home'>
@@ -51,20 +51,20 @@ function TabNavigation() {
 
             if (route.name === 'Home') {
               iconName = focused
-                ? require('../Image/home-black.png')
-                : require('../Image/home.png');
+                ? images.home_black
+                : images.home;
             } else if (route.name === 'Favorit') {
               iconName = focused 
-              ? require('../Image/heart-black.png') 
-              : require('../Image/heart.png');
+              ? images.heart_black 
+              : images.heart
             }else if (route.name === 'Event') {
               iconName = focused 
-              ? require('../Image/event-black.png') 
-              : require('../Image/event.png');
+              ? images.event_black
+              : images.event;
             }else if (route.name === 'Profile') {
               iconName = focused 
-              ? require('../Image/user-black.png') 
-              : require('../Image/user.png');
+              ? images.user_black
+              : images.user
             }
             // You can return any component that you like here!
             return <Image source={iconName} style={{width:30,height:20 ,resizeMode:'contain'}} />;

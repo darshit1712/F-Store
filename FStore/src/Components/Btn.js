@@ -6,7 +6,7 @@ const Btn = ({title,onPress,type}) => {
   return (
     <View>
       <TouchableOpacity style={styles.header} onPress={onPress}>
-        <Text style={{fontSize:18,color:'#fff',padding:5}}>{title}</Text>
+        <Text style={styles.title}>{title}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -22,5 +22,8 @@ const styles = StyleSheet.create({
     backgroundColor:'#1abc9c',
     shadowRadius:30,
     borderRadius: 30,
+  },
+  title:{
+    fontSize:18,color:'#fff',padding:5
   }
 });

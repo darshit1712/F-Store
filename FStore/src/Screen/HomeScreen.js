@@ -5,10 +5,11 @@ import CustomHeader from '../Components/CustomHeader';
 import Search from '../Components/Search';
 import storage,{firebase} from '@react-native-firebase/storage';
 import { Context } from '../context/FStoreContext'
+import images from '../utility/ImageConst';
 
 
 const HomeScreen = ({navigation}) => {
-  const {signout,state} =React.useContext(Context);
+  const {state} =React.useContext(Context);
 
   const [like, setLike] = useState(false);
   const [serach, setSerach] = useState('');
@@ -45,29 +46,13 @@ const HomeScreen = ({navigation}) => {
         navigation={() => {
           navigation.openDrawer();
         }}
-        lefticons={require('../Image/menu.png')}
+        lefticons={images.menu}
       />
      
       <Search  
           placeholder='Serach'
           value={serach}
           onChangeText={event =>{setSerach(event)}}/>
-          {/* <ScrollView>
-            {lists.map(item=>{
-              console.log(item.image)
-              return(
-                  <Card
-                  like={like}
-                  image={item.image}
-                  title={item.Title}
-                  descripation={item.Descripation}
-                  onPress={onlike(item)}
-                  date={item.date}
-                  place={item.Place}
-              />)
-            })}
-          </ScrollView> */}
-
       <FlatList 
         data={lists
         // .filter((item)=>{

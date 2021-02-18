@@ -3,11 +3,9 @@ import {Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import CustomHeader from '../Components/CustomHeader';
 import TextArea from '../Components/TextArea';
-import TextInput from '../Components/TextInput';
+import Input from '../Components/Input';
 import {Context} from '../context/FStoreContext';
-import storage, {firebase} from '@react-native-firebase/storage';
-import firestore from '@react-native-firebase/firestore';
-import Btn from '../Components/Btn';
+import images from '../utility/ImageConst';
 
 const EventScreen = ({navigation}) => {
   const {state} = useContext(Context);
@@ -18,7 +16,6 @@ const EventScreen = ({navigation}) => {
   const [date,setDate]=useState('')
   const [quest,setQuest]=useState('')
 
-  console.log(state.event)
   useEffect(() => {
   if(state.event===undefined){
       setImage()
@@ -38,25 +35,25 @@ const EventScreen = ({navigation}) => {
   }, [])
 
   return (
-    <SafeAreaView style={styles.contioner}>
+    <SafeAreaView style={styles.conatiner}>
       <CustomHeader
         title="Event"
         navigate={() => navigation.navigate('EditEvent')}
         navigation={() => {
           navigation.openDrawer();
         }}
-        lefticons={require('../Image/menu.png')}
-        righticons={require('../Image/add-event.png')}
+        lefticons={images.menu}
+        righticons={images.add_event}
       />
       <ScrollView>
         <View style={styles.headerImage}>
           <Image
-            style={{width: 300, height: 150}}
+            style={styles.image}
             source={{uri: image}}
           />
         </View>
-        <View style={{flex: 2, marginHorizontal: 20}}>
-          <TextInput
+        <View style={styles.content}>
+          <Input
             label="Title"
             placeholder="Title"
             value={title}
@@ -70,19 +67,19 @@ const EventScreen = ({navigation}) => {
             value={description}
             editable={false}
           />
-          <TextInput label="Place" 
+          <Input label="Place" 
             placeholder="Place" 
             value={place} 
             editable={false}
 
           />
-          <TextInput 
+          <Input 
             label="Date" 
             placeholder="Date"  
             value={date}
             editable={false}
              />
-          <TextInput 
+          <Input 
             label="Quest" 
             placeholder="Quest" 
             value={quest}
@@ -96,12 +93,18 @@ const EventScreen = ({navigation}) => {
 
 export default EventScreen;
 const styles = StyleSheet.create({
-  contioner: {
+  container: {
     flex: 1,
   },
   headerImage: {
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: '15%',
+  },
+  image:{
+    width: 300, height: 150
+  },
+  content:{
+    flex: 2, marginHorizontal: 20
   },
 });

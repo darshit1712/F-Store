@@ -1,6 +1,8 @@
 import React,{useState,useEffect,useContext}  from 'react'
 import { Modal, StyleSheet, Text, View ,Pressable, SafeAreaView,Image,FlatList} from 'react-native'
 import { Context } from '../context/FStoreContext'
+import images from '../utility/ImageConst';
+import Btn from './Btn';
 import Checkbox from './Checkbox';
 
 const EventModal = ({isVisible,setISVisible}) => {
@@ -28,15 +30,15 @@ useEffect(() => {
         >
              <View style={styles.centered}>
                 <View style={styles.modalView}>
-                       <View style={{flexDirection:'row',justifyContent:'space-between',marginBottom:20}}>
-                        <Text style={{fontSize:24}}>Quest</Text>
-                        <Pressable
-                            style={styles.button}
-                            onPress={() => setISVisible(!isVisible)}
+                       <View style={styles.modal_header}>
+                          <Text style={{fontSize:24}}>Guest</Text>
+                            <Pressable
+                                style={styles.button}
+                                onPress={() => setISVisible(!isVisible)}
                             >
-                        <Image style={{height:25,width:25}} source={require('../Image/cancel.png')}/>
-                        </Pressable>
-                       </View>
+                               <Image style={styles.header_image} source={images.cancel}/>
+                            </Pressable>
+                        </View>
 
                        <FlatList 
                           data={list}
@@ -44,12 +46,12 @@ useEffect(() => {
                           renderItem={({item})=>{
                               console.log(item)
                               return(
-                                <View style={{flexDirection:'row',alignItems:'center',marginVertical:10}}>
-                                  <Checkbox />
+                                <View style={styles.content}>
+                                  <Checkbox 
+                                   />
                                   <Text style={{fontSize:18}}>
                                       {item}
-                                  </Text>
-                                 
+                                  </Text>                               
                                 </View>
                               )
                           }}
@@ -86,5 +88,14 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         elevation: 5
       },
+      modal_header:{
+        flexDirection:'row',justifyContent:'space-between',marginBottom:20
+      },
+      header_image:{
+        height:25,width:25
+      },
+      content:{
+        flexDirection:'row',alignItems:'center',marginVertical:10
+      }    
       
 })

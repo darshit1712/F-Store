@@ -111,7 +111,8 @@ const addUser = (dispatch) => {
 const signup=(dispatch)=>{
   return async(email,password)=>{
     try {
-       await auth().createUserWithEmailAndPassword(email, password)
+     const response=await auth().createUserWithEmailAndPassword(email, password)
+      console.log(response.user.uid)
     } catch (e) {
       alert('Enter the valid and password')
     }

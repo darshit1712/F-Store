@@ -7,28 +7,23 @@ import {
   Image,
   ActivityIndicator,
   Button,
+  TouchableOpacity,
 } from 'react-native';
-import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import Btn from '../Components/Btn';
 import CustomHeader from '../Components/CustomHeader';
 import TextArea from '../Components/TextArea';
-import TextInput from '../Components/TextInput';
+import Input from '../Components/Input';
 import moment from 'moment';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import ImagePicker from 'react-native-image-crop-picker';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import MultiSelect from 'react-native-multiple-select';
-
 import storage, {firebase} from '@react-native-firebase/storage';
-import firestore from '@react-native-firebase/firestore';
-
 import {Context} from '../context/FStoreContext';
-import {useAsyncStorage} from '@react-native-community/async-storage';
 import EventModal from '../Components/EventModal';
+import images from '../utility/ImageConst';
 
 const EditEventScreen = ({navigation}) => {
-  const {addstore, state, Eventdetils,Getuser} = useContext(Context);
-
+  const {addstore, state, Eventdetils, Getuser} = useContext(Context);
   const [isLoading, setIsloading] = useState(false);
   const [image, setImage] = useState(null);
   const [title, setTitle] = useState('');
@@ -38,7 +33,7 @@ const EditEventScreen = ({navigation}) => {
   const [quest, setQuest] = useState('');
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isVisible, setISVisible] = useState(false);
-const [list,setList]=useState([])
+  const [list, setList] = useState([]);
 
   const handleConfirm = (date) => {
     setDate(moment(date).format('DD-MM-YYYY'));
@@ -47,15 +42,15 @@ const [list,setList]=useState([])
 
   useEffect(() => {
     let data = [];
-    Getuser()
-    state.user.map(e=>{
-        console.log(e.Email)
-        data.push(e.Email)
-        // let listItem = e.Email;
-        console.log('Data ::-', data);
-        setList(data)
-     })
-  }, [])
+    Getuser();
+    state.user.map((e) => {
+      console.log(e.Email);
+      data.push(e.Email);
+      // let listItem = e.Email;
+      console.log('Data ::-', data);
+      setList(data);
+    });
+  }, []);
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
@@ -117,34 +112,26 @@ const [list,setList]=useState([])
   };
 
   return (
-    <SafeAreaView style={styles.contioner}>
+    <SafeAreaView style={styles.container}>
       <CustomHeader
         title="EditeEvent"
         navigation={() => {
           navigation.goBack();
         }}
-        lefticons={require('../Image/back.png')}
+        lefticons={images.back}
         leftname="Back"
       />
       <KeyboardAwareScrollView>
         <View style={styles.headerImage}>
           {image !== null ? (
-            <Image style={{height: 150, width: 300}} source={{uri: image}} />
+            <Image style={styles.image} source={{uri: image}} />
           ) : null}
           <TouchableOpacity onPress={() => onaddImage()}>
-            <Text
-              style={{
-                color: '#16a085',
-                fontSize: 18,
-                fontWeight: 'bold',
-                marginVertical: 5,
-              }}>
-              Add Image
-            </Text>
+            <Text style={styles.image_add}>Add Image</Text>
           </TouchableOpacity>
         </View>
-        <View style={{flex: 3, marginHorizontal: 20}}>
-          <TextInput
+        <View style={styles.content}>
+          <Input
             label="Title"
             placeholder="Title"
             value={title}
@@ -158,77 +145,52 @@ const [list,setList]=useState([])
             value={description}
             onChangeText={(description) => setDescription(description)}
           />
-          <TextInput
+          <Input
             label="Place"
             placeholder="Place"
             value={place}
             onChangeText={(place) => setPlace(place)}
           />
-          <Text style={{marginHorizontal: 10, fontSize: 16, color: '#4d4d4d'}}>
-            Date
-          </Text>
+          <Text style={styles.content_date_label}>Date</Text>
           <TouchableOpacity
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginBottom: 20,
-              marginVertical: 10,
-              borderBottomWidth: 0.4,
-              marginHorizontal: 10,
-            }}
+            style={styles.content_date}
             onPress={showDatePicker}>
             {date.length == 0 ? (
               <Text
-                style={{
-                  marginBottom: 10,
-                  fontSize: 16,
-                  color: 'rgb(120, 120, 120)',
-                }}>
+                style={[
+                  styles.content_date_select_text,
+                  {color: 'rgb(120, 120, 120)'},
+                ]}>
                 DD-MM-YYYY
               </Text>
             ) : (
-              <Text style={{marginBottom: 10, fontSize: 16, color: '#000'}}>
-                {' '}
-                {date}
-              </Text>
+              <Text style={styles.content_date_select_text}>{date}</Text>
             )}
             <Image
-              style={{width: 25, height: 25, marginRight: 25, marginBottom: 10}}
-              source={require('../Image/calendar.png')}
+              style={styles.content_date_select_icon}
+              source={images.calendar}
             />
           </TouchableOpacity>
-          <Text style={{marginHorizontal: 10, fontSize: 16, color: '#4d4d4d'}}>
-            Quest
-          </Text>
+          <Text style={styles.content_guest_text}>Guest</Text>
           <TouchableOpacity
-            style={{
-              flexDirection:'row',
-              alignItems:'center',
-              justifyContent:"space-between",
-              marginBottom: 20,
-              marginVertical: 10,
-              borderBottomWidth: 0.4,
-              marginHorizontal: 10,
-            }}
+            style={styles.content_guest}
             onPress={() => setISVisible(true)}>
             {date.length == 0 ? (
               <Text
-                style={{
-                  marginBottom: 10,
-                  fontSize: 16,
-                  color: 'rgb(120, 120, 120)',
-                }}>
-                Quest
+                style={[
+                  styles.content_guest_select,
+                  {color: 'rgb(120, 120, 120)'},
+                ]}>
+                Guest
               </Text>
             ) : (
-              <Text style={{marginBottom: 10, fontSize: 16, color: '#000'}}>
+              <Text style={[styles.content_guest_select, {color: '#000'}]}>
                 {quest}
               </Text>
             )}
             <Image
-              style={{width: 25, height: 25, marginRight: 25, marginBottom: 10}}
-              source={require('../Image/quest.png')}
+              style={styles.content_guest_icon}
+              source={images.guest_list}
             />
           </TouchableOpacity>
           <Btn title="Add" onPress={onsubmit} />
@@ -252,7 +214,7 @@ const [list,setList]=useState([])
 export default EditEventScreen;
 
 const styles = StyleSheet.create({
-  contioner: {
+  container: {
     flex: 1,
   },
   headerImage: {
@@ -260,5 +222,68 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: '5%',
+  },
+  image: {
+    height: 150,
+    width: 300,
+  },
+  image_add: {
+    color: '#16a085',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginVertical: 5,
+  },
+  content: {
+    flex: 3,
+    marginHorizontal: 20,
+  },
+  content_date_label: {
+    marginHorizontal: 10,
+    fontSize: 16,
+    color: '#4d4d4d',
+  },
+  content_date: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 20,
+    marginVertical: 10,
+    borderBottomWidth: 0.4,
+    marginHorizontal: 10,
+  },
+  content_date_select_text: {
+    marginBottom: 10,
+    fontSize: 16,
+    color: '#000',
+  },
+  content_date_select_icon: {
+    width: 25,
+    height: 25,
+    marginRight: 25,
+    marginBottom: 10,
+  },
+  content_guest_text: {
+    marginHorizontal: 10,
+    fontSize: 16,
+    color: '#4d4d4d',
+  },
+  content_guest: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 20,
+    marginVertical: 10,
+    borderBottomWidth: 0.4,
+    marginHorizontal: 10,
+  },
+  content_guest_select: {
+    marginBottom: 10,
+    fontSize: 16,
+  },
+  content_guest_icon: {
+    width: 25,
+    height: 25,
+    marginRight: 25,
+    marginBottom: 10,
   },
 });
