@@ -33,11 +33,7 @@ const SignInScreen = ({navigation}) => {
     } else if (reg.test(email) !== true) {
       alert('Enter the valid Email');
     } else {
-      state.user.map((e) => {
-        if (e.Email === email) {
           signIn(email, password);
-        }
-      });
     }
   };
   return (

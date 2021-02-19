@@ -7,7 +7,8 @@ import Input from '../Components/Input';
 import {Context} from '../context/FStoreContext';
 import images from '../utility/ImageConst';
 
-const EventScreen = ({navigation}) => {
+const EventScreen = ({route,navigation}) => {
+ 
   const {state} = useContext(Context);
   const [image,setImage]=useState(null)
   const [title,setTitle]=useState('')
@@ -17,22 +18,22 @@ const EventScreen = ({navigation}) => {
   const [quest,setQuest]=useState('')
 
   useEffect(() => {
-  if(state.event===undefined){
-      setImage()
-      setTitle('')
-      setDate('')
-      setDescription('')
-      setQuest('')
-      setPlace('')
-  }else{
-      setImage(state.event.imageUrl)
-      setTitle(state.event.title)
-      setDate(state.event.date)
-      setDescription(state.event.description)
-      setQuest(state.event.quest)
-      setPlace(state.event.place)
-  }
-  }, [])
+    if(state.event==undefined){
+        setImage()
+        setTitle('')
+        setDate('')
+        setDescription('')
+        setQuest('')
+        setPlace('')
+    }else{
+        setImage(state.event.imageUrl)
+        setTitle(state.event.title)
+        setDate(state.event.date)
+        setDescription(state.event.description)
+        setQuest(state.event.quest)
+        setPlace(state.event.place)
+    }
+  }, [state.event])
 
   return (
     <SafeAreaView style={styles.conatiner}>

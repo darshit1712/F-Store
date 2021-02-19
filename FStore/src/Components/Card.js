@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import images from '../utility/ImageConst';
+import Checkbox from './Checkbox';
 
 const Card = ({like, title, date, description, onPress, image, place}) => {
   return (
@@ -18,7 +19,10 @@ const Card = ({like, title, date, description, onPress, image, place}) => {
           source={{uri: image}}
           blurRadius={5}>
           <View style={{flex: 1}}>
-            {like === true ? (
+          <Checkbox 
+
+          />
+            {like ? (
               <TouchableOpacity
                 style={{alignSelf: 'flex-end'}}
                 onPress={onPress}>

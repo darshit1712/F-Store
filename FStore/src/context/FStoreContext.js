@@ -8,45 +8,22 @@ import auth from "@react-native-firebase/auth"
 const storeReducer = (state, action) => {
 
   switch (action.type) {
-      //  case 'ADD_UserDetils' :
-      //     return action.payload ;
-       case 'ADD_EVENT':
-         return {...state,event:action.payload};
-      // case 'add_detile':
-      //   return action.user;
-      case 'UPDATE_USER' :
+      case 'ADD_EVENT':
+        return {...state,event:action.payload};
+      case 'UPDATE_USER':
         return {...state,updates:action.payload};
       case 'USER_DETAILS':
         return {...state,user:action.payload};
       case 'ADD_USER':
-          return {...state,userData:action.payload};
+        return {...state,userData:action.payload};
     default:
       return state;
   }
 };
-
-const Userdetils=(dispatch)=>{
-  return(fname,lname,dob,imageUrl,gender,email)=>{
-      firestore().collection("user").add({
-                Image:imageUrl,
-                FirstName:fname,
-                LastName:lname,
-                Email:email,
-                Dob:dob,
-                Gender:gender
-            })
-            .then(() => {
-                alert("You have signed up Successfully");
-            })
-            .catch(() => {
-                alert("Error adding document: ");
-            });
-  }
-}
 const UpadataUsedetils =(dispatch)=>{
   return async(fname,lname,email,imageUrl,dob,gender,id)=>{
     const update={fname,lname,email,imageUrl,dob,gender,id}
-        firestore().collection("user").doc(`${id}`).update({
+        firestore().collection("User").doc(`${id}`).update({
             FirstName: fname,
             LastName: lname,
             Email: email,
@@ -63,12 +40,13 @@ const Getuser=(dispatch)=>{
   return()=>{
     firebase
     .firestore()
-    .collection("user")
+    .collection("User")
     .onSnapshot(snapshot => {
       const lists = snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data(),
       }))
+      console.log(lists)
        dispatch({ type: 'USER_DETAILS',payload:Object.values(lists)})
     })
   }
@@ -77,8 +55,8 @@ const Eventdetils=(dispatch)=>{
   return(title,description,place,quest,date,imageUrl)=>{
     const data={title,place,description,date,quest,imageUrl}
     dispatch({type:'ADD_EVENT',payload:data});
-
-    firestore().collection("UserEvent").add({
+    firestore().collection("UserEvent")
+    .add({
       Title:title,
       Description:description,
       Place:place,
@@ -95,38 +73,39 @@ const Eventdetils=(dispatch)=>{
 
   }
 }
-const addUser = (dispatch) => {
-  return  (fname,lname,dob,image,male,female,other,email) => {
-      const user={fname,lname,dob,image,male,female,other,email}
-      dispatch({ type: 'add_detile' , user : user})
-  };
-};
-// const addstore = (dispatch) => {
-//   return  (title,place,descripation,date,quest,image) => {
-//       const data={title,place,descripation,date,quest,image}
-//       dispatch({ type: 'add_store' ,payload : data});
-      
-//   };
-// };
 const signup=(dispatch)=>{
-  return async(email,password)=>{
-    try {
-     const response=await auth().createUserWithEmailAndPassword(email, password)
-      console.log(response.user.uid)
-    } catch (e) {
-      alert('Enter the valid and password')
-    }
+  return async(email,password,fname,lname,dob,gender,imageUrl)=>{
+    await auth().createUserWithEmailAndPassword(email, password)
+    .then((response) => {
+      const uid = response.user.uid
+      console.log(uid)
+      firestore().collection("User")
+          .doc(uid)
+          .set({
+            Image:imageUrl,
+            FirstName:fname,
+            LastName:lname,
+            Email:email,
+            Dob:dob,
+            Gender:gender,
+            id:uid
+          })
+          .then(() => {
+            alert("You have signed up Successfully");
+          })
+          .catch((error) => {
+              alert(error)
+          });
+  })
+  .catch((error) => {
+      alert(error)
+});
   }
 }
   const signIn = (dispatch) => {
     return  async(email,password) => {  
       try {
-        await auth().signInWithEmailAndPassword(email, password)
-        try {
-          await AsyncStorage.setItem("userData", JSON.stringify(email));
-       } catch (error) {
-         console.log("Something went wrong", error);
-       }
+      await auth().signInWithEmailAndPassword(email, password)
      } catch (e) {
        alert('Enter the valid email and password')
      }
@@ -135,26 +114,20 @@ const signup=(dispatch)=>{
   const signout = (dispatch) => {
     return async() => {
       auth().signOut()
-      await AsyncStorage.removeItem('userData');
     };
   };
   const gettoken = (dispatch) => {
-    return async() => {
-      try {
-          let userData = await AsyncStorage.getItem("userData");
-          let data = JSON.parse(userData);
-          dispatch({type:'ADD_USER' ,payload:data})
-      } catch(e) {
-        console.log("get",e);
-      }
+    return () => {
+      let user = auth().currentUser.uid;
+       dispatch({type:'ADD_USER' ,payload:user})
     };
   }; 
+
   export const { Context, Provider } = createDataContext(
     storeReducer,
     {
-      addUser,
       signIn,signout,
-      gettoken,Userdetils,
+      gettoken,
       Eventdetils,Getuser,
       signup,UpadataUsedetils,
     },

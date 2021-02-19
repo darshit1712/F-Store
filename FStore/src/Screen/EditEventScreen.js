@@ -47,7 +47,7 @@ const EditEventScreen = ({navigation}) => {
       console.log(e.Email);
       data.push(e.Email);
       // let listItem = e.Email;
-      console.log('Data ::-', data);
+      //console.log('Data ::-', data);
       setList(data);
     });
   }, []);

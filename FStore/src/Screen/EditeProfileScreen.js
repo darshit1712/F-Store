@@ -38,7 +38,7 @@ const EditeProfileScreen = ({navigation}) => {
     gettoken();
     Getuser();
     state.user.map((e) => {
-      if (e.Email === state.userData) {
+      if (e.id === state.userData) {
         setId(e.id);
         setFName(e.FirstName);
         setLName(e.LastName);
@@ -65,9 +65,10 @@ const EditeProfileScreen = ({navigation}) => {
 
   const onAddImage = () => {
     ImagePicker.openPicker({
-      width: 300,
-      height: 400,
+      width: 100,
+      height: 200,
       cropping: true,
+      compressImageQuality:0
     }).then((image) => {
       setImage(image.sourceURL);
     });

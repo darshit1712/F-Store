@@ -14,16 +14,13 @@ import images from '../utility/ImageConst';
 const DrawerContext = (props) => {
   const {signout, state, gettoken, Getuser} = useContext(Context);
   const [fname, setFname] = useState('');
-  const [image, setImage] = useState();
+  const [image, setImage] = useState(null);
 
   useEffect(() => {
     gettoken();
     Getuser();
     if (state.updates == undefined) {
       setFname('xyz');
-      setImage(
-        'https://lh3.googleusercontent.com/proxy/-jQtGsgPX8qJ6gX21wn0y6p3Ovp8gvw_CYJ6oohRW8PGYMkSRmOw6Yw3D0OTHQDWocufsNN3OimOOJWTu5Js9qLuIzEkiK_QLtxTuYfpEw0xHVkOzqk5',
-      );
     } else {
       setImage(state.updates.imageUrl);
       setFname(state.updates.fname);
@@ -33,11 +30,14 @@ const DrawerContext = (props) => {
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <View style={styles.header_image}>
-          <Image source={{uri: image}} style={styles.image} />
-          <TouchableOpacity
-            onPress={() => props.navigation.navigate('EditeProfile')}>
-            <Text style={styles.header_text}>Edit profile</Text>
-          </TouchableOpacity>
+        {image!=null? 
+          <Image source={{uri: image}} style={styles.image} /> :
+          <Image source={images.profile} style={styles.image} />
+        }
+        <TouchableOpacity
+          onPress={() => props.navigation.navigate('EditeProfile')}>
+          <Text style={styles.header_text}>Edit profile</Text>
+        </TouchableOpacity>
         </View>
         <Text style={{fontSize: 16}}>Welcome to {fname}</Text>
         <View style={styles.content}>

@@ -19,6 +19,7 @@ const FavoriteScreen = ({route,navigation}) => {
       firebase
       .firestore()
       .collection("UserEvent")
+      .orderBy("date",'asc')
       .onSnapshot(snapshot => {
         const lists = snapshot.docs.map(doc => ({
           id: doc.id,
@@ -45,10 +46,11 @@ const FavoriteScreen = ({route,navigation}) => {
                         if(serach==""){
                             return e;
                            }else if( e.date.toString().includes(serach.toString()) ||
-                           e.description.includes(serach) ||
-                           e.title.includes(serach) ||
-                           e.place.includes(serach) ){
-                               return item;
+                           e.Title.toLowerCase().includes(serach.toLowerCase()) ||
+                           e.Description.toLowerCase().includes(serach.toLowerCase()) ||
+                           e.Place.toLowerCase().includes(serach.toLowerCase())   
+                           ){
+                               return e;
                        }})
         }
         keyExtractor={item=>item.id}

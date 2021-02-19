@@ -8,13 +8,9 @@ import DrawerNavigation from './src/Navigation/DrawerNavigation';
 import { Provider } from './src/context/FStoreContext';
 import { Context } from './src/context/FStoreContext'
 import auth from "@react-native-firebase/auth"
-import { Switch } from 'react-native-gesture-handler';
-
 const Stack = createStackNavigator();
-
 const App =()=> {
-  const {gettoken,state} =React.useContext(Context);
-  const [show,hide]=React.useState(true)
+  const {state} =React.useContext(Context);
   const [login,setLogin]=React.useState(false)
   React.useEffect(() => {
      auth().onAuthStateChanged((user)=>{
@@ -24,16 +20,11 @@ const App =()=> {
         setLogin(false)
       }
     })
-
-    gettoken()
-
   }, []);
-
+  
   return (
     <NavigationContainer>
       <Stack.Navigator>
-      
-
       {login===true ? 
       <Stack.Screen name="Drawer" component={DrawerNavigation} options={{headerShown:false}}/> :
       <>

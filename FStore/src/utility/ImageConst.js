@@ -22,6 +22,8 @@ const images={
     is_greater_than: require('../Image/is-greater-than.png'),
     visible:require('../Image/visible.png'),
     invisible:require('../Image/invisible.png'),
+    profile:require('../Image/profile.png'),
+
     
 }
 export default images;

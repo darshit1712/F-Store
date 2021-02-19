@@ -22,7 +22,7 @@ const ProfileScreen = ({navigation}) => {
     Getuser();
     if (state.updates === undefined) {
       state.user.map((e) => {
-        if (e.Email === state.userData) {
+        if (e.id === state.userData) {
           setImage(e.Image);
           setFname(e.FirstName);
           setLname(e.LastName);

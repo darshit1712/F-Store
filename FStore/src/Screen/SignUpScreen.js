@@ -10,7 +10,6 @@ import {
   Platfrom,
   ActivityIndicator,
 } from 'react-native';
-import {ScrollView} from 'react-native-gesture-handler';
 import Btn from '../Components/Btn';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
@@ -24,7 +23,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import images from '../utility/ImageConst';
 
 const SignUpScreen = ({navigation}) => {
-  const {signup, state, Userdetils} = useContext(Context);
+  const {signup, state} = useContext(Context);
 
   const reference = storage().ref('black-t-shirt-sm.png');
   const [isLoading, setIsloading] = useState(false);
@@ -38,7 +37,7 @@ const SignUpScreen = ({navigation}) => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [image, setImage] = useState(null);
   const [show, setShow] = useState(true);
-  const[showcomfimpassword,setShowComfimpassword]=useState(false)
+  const[showcomfimpassword,setShowComfimpassword]=useState(true)
   const handleConfirm = (date) => {
     setDob(moment(date).format('DD-MM-YYYY'));
     hideDatePicker();
@@ -58,9 +57,11 @@ const SignUpScreen = ({navigation}) => {
 
   const onAddprofile = () => {
     ImagePicker.openPicker({
-      width: 300,
-      height: 400,
+      width: 100,
+      height: 100,
       cropping: true,
+      compressImageQuality:0
+
     }).then((image) => {
       const uriImage = image.sourceURL;
       setImage(uriImage);
@@ -68,31 +69,29 @@ const SignUpScreen = ({navigation}) => {
   };
 
   const onsubmit = async (e) => {
-    // const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; //email validation
-    // if (image == '') {
-    //   alert('place add image');
-    // } else if (fname == '') {
-    //   alert('Enter the First_Name');
-    // } else if (lname == '') {
-    //   alert('Enter the Last_Name');
-    // } else if (email == '') {
-    //   alert('Enter the Email');
-    // } else if (reg.test(email) !== true) {
-    //   alert('Enter the valid Email');
-    // } else if (dob == '') {
-    //   alert('Enter the Date of birthday');
-    // } else if (gender == '') {
-    //   alert('seclect a gender');
-    // } else if (password == '') {
-    //   alert('Enter the password');
-    // } else if (password !== comfirmpassword) {
-    //   alert('Passwords must be same');
-    // } else {
-    //   const imageUrl = await uploadImage();
-    //   // Userdetils(fname, lname, dob, imageUrl, gender, email);
-    //   signup(email, password);
-    // }
-    signup(email, password);
+    const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; //email validation
+    if (image == '') {
+      alert('place add image');
+    } else if (fname == '') {
+      alert('Enter the First_Name');
+    } else if (lname == '') {
+      alert('Enter the Last_Name');
+    } else if (email == '') {
+      alert('Enter the Email');
+    } else if (reg.test(email) !== true) {
+      alert('Enter the valid Email');
+    } else if (dob == '') {
+      alert('Enter the Date of birthday');
+    } else if (gender == '') {
+      alert('seclect a gender');
+    } else if (password == '') {
+      alert('Enter the password');
+    } else if (password !== comfirmpassword) {
+      alert('Passwords must be same');
+    } else {
+      const imageUrl = await uploadImage();
+      signup(email, password,fname,lname,dob,gender,imageUrl);
+    }
   };
   const uploadImage = async () => {
     if (image == null) {
@@ -118,7 +117,6 @@ const SignUpScreen = ({navigation}) => {
       return null;
     }
   };
-
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAwareScrollView>
