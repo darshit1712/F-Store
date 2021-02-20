@@ -22,7 +22,7 @@ import {Context} from '../context/FStoreContext';
 import EventModal from '../Components/EventModal';
 import images from '../utility/ImageConst';
 
-const EditEventScreen = ({navigation}) => {
+const EditEventScreen = ({navigation, props}) => {
   const {addstore, state, Eventdetils, Getuser} = useContext(Context);
   const [isLoading, setIsloading] = useState(false);
   const [image, setImage] = useState(null);
@@ -30,13 +30,13 @@ const EditEventScreen = ({navigation}) => {
   const [description, setDescription] = useState('');
   const [place, setPlace] = useState('');
   const [date, setDate] = useState('');
-  const [quest, setQuest] = useState('');
+  const [guest, setGuest] = useState('');
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isVisible, setISVisible] = useState(false);
   const [list, setList] = useState([]);
 
   const handleConfirm = (date) => {
-    setDate(moment(date).format('DD-MM-YYYY'));
+    setDate(moment(date).format('DD/MM/YYYY'));
     hideDatePicker();
   };
 
@@ -44,7 +44,7 @@ const EditEventScreen = ({navigation}) => {
     let data = [];
     Getuser();
     state.user.map((e) => {
-      console.log(e.Email);
+      // console.log(e.Email)
       data.push(e.Email);
       // let listItem = e.Email;
       //console.log('Data ::-', data);
@@ -82,7 +82,7 @@ const EditEventScreen = ({navigation}) => {
       alert('Add to Data');
     } else {
       const imageUrl = await uploadImage();
-      Eventdetils(title, description, place, quest, date, imageUrl);
+      Eventdetils(title, description, place, guest, date, imageUrl);
       // addstore(title,descripation,place,quest,date,image)
     }
   };
@@ -175,7 +175,7 @@ const EditEventScreen = ({navigation}) => {
           <TouchableOpacity
             style={styles.content_guest}
             onPress={() => setISVisible(true)}>
-            {date.length == 0 ? (
+            {guest.length == 0 ? (
               <Text
                 style={[
                   styles.content_guest_select,
@@ -185,7 +185,7 @@ const EditEventScreen = ({navigation}) => {
               </Text>
             ) : (
               <Text style={[styles.content_guest_select, {color: '#000'}]}>
-                {quest}
+                {guest}
               </Text>
             )}
             <Image
@@ -193,6 +193,7 @@ const EditEventScreen = ({navigation}) => {
               source={images.guest_list}
             />
           </TouchableOpacity>
+
           <Btn title="Add" onPress={onsubmit} />
           {isLoading && (
             <ActivityIndicator size="large" style={styles.loadingIndicator} />
@@ -206,7 +207,12 @@ const EditEventScreen = ({navigation}) => {
         onConfirm={handleConfirm}
         onCancel={hideDatePicker}
       />
-      <EventModal isVisible={isVisible} setISVisible={setISVisible} />
+      <EventModal
+        setGuest={setGuest}
+        isVisible={isVisible}
+        setISVisible={setISVisible}
+        // onConfirm={onConfirm}
+      />
     </SafeAreaView>
   );
 };

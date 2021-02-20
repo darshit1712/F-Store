@@ -7,33 +7,32 @@ import Input from '../Components/Input';
 import {Context} from '../context/FStoreContext';
 import images from '../utility/ImageConst';
 
-const EventScreen = ({route,navigation}) => {
- 
+const EventScreen = ({route, navigation}) => {
   const {state} = useContext(Context);
-  const [image,setImage]=useState(null)
-  const [title,setTitle]=useState('')
-  const [description,setDescription]=useState('')
-  const [place,setPlace]=useState('')
-  const [date,setDate]=useState('')
-  const [quest,setQuest]=useState('')
+  const [image, setImage] = useState(null);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [place, setPlace] = useState('');
+  const [date, setDate] = useState('');
+  const [guest, setGuest] = useState('dd');
 
   useEffect(() => {
-    if(state.event==undefined){
-        setImage()
-        setTitle('')
-        setDate('')
-        setDescription('')
-        setQuest('')
-        setPlace('')
-    }else{
-        setImage(state.event.imageUrl)
-        setTitle(state.event.title)
-        setDate(state.event.date)
-        setDescription(state.event.description)
-        setQuest(state.event.quest)
-        setPlace(state.event.place)
+    if (state.event == undefined) {
+      setImage();
+      setTitle('');
+      setDate('');
+      setDescription('');
+      setGuest('');
+      setPlace('');
+    } else {
+      setImage(state.event.imageUrl);
+      setTitle(state.event.title);
+      setDate(state.event.date);
+      setDescription(state.event.description);
+      setGuest(state.event.guest);
+      setPlace(state.event.place);
     }
-  }, [state.event])
+  }, [state.event]);
 
   return (
     <SafeAreaView style={styles.conatiner}>
@@ -48,10 +47,7 @@ const EventScreen = ({route,navigation}) => {
       />
       <ScrollView>
         <View style={styles.headerImage}>
-          <Image
-            style={styles.image}
-            source={{uri: image}}
-          />
+          <Image style={styles.image} source={{uri: image}} />
         </View>
         <View style={styles.content}>
           <Input
@@ -68,22 +64,22 @@ const EventScreen = ({route,navigation}) => {
             value={description}
             editable={false}
           />
-          <Input label="Place" 
-            placeholder="Place" 
-            value={place} 
+          <Input
+            label="Place"
+            placeholder="Place"
+            value={place}
             editable={false}
-
           />
-          <Input 
-            label="Date" 
-            placeholder="Date"  
+          <Input
+            label="Date"
+            placeholder="Date"
             value={date}
             editable={false}
-             />
-          <Input 
-            label="Quest" 
-            placeholder="Quest" 
-            value={quest}
+          />
+          <Input
+            label="Guest"
+            placeholder="Guest"
+            value={guest}
             editable={false}
           />
         </View>
@@ -102,10 +98,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: '15%',
   },
-  image:{
-    width: 300, height: 150
+  image: {
+    width: 300,
+    height: 150,
   },
-  content:{
-    flex: 2, marginHorizontal: 20
+  content: {
+    flex: 2,
+    marginHorizontal: 20,
   },
 });
