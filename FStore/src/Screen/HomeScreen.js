@@ -15,14 +15,12 @@ import Search from '../Components/Search';
 import storage, {firebase} from '@react-native-firebase/storage';
 import {Context} from '../context/FStoreContext';
 import images from '../utility/ImageConst';
+import firestore from '@react-native-firebase/firestore';
 
 const HomeScreen = ({navigation}) => {
   const {state} = React.useContext(Context);
-
-  const [like, setLike] = useState(false);
   const [serach, setSerach] = useState('');
   const [lists, setLists] = useState([]);
-  const [isSelected, setISSelected] = useState({});
 
   useEffect(() => {
     firebase
@@ -38,6 +36,12 @@ const HomeScreen = ({navigation}) => {
       });
   }, []);
 
+  const onupdate = (item) => {
+    firebase.firestore().collection('UserEvent').doc(item.id).update({
+      Uid: state.userData,
+      isSelected: !item.isSelected,
+    });
+  };
   return (
     <SafeAreaView style={styles.container}>
       <CustomHeader
@@ -73,13 +77,14 @@ const HomeScreen = ({navigation}) => {
           return (
             <TouchableOpacity onPress={() => alert(item.like)}>
               <Card
-                like={item.isSelected}
+                guest={item.Guest.length}
+                icon={item.isSelected ? images.like : images.like_black}
                 image={item.image}
                 title={item.Title}
                 description={item.Description}
-                onPress={() =>
-                  setISSelected((item.isSelected = !item.isSelected))
-                }
+                onPress={() => {
+                  onupdate(item);
+                }}
                 date={item.date}
                 place={item.Place}
               />
