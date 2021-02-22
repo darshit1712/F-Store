@@ -14,7 +14,7 @@ const EventScreen = ({route, navigation}) => {
   const [description, setDescription] = useState('');
   const [place, setPlace] = useState('');
   const [date, setDate] = useState('');
-  const [guest, setGuest] = useState('dd');
+  const [guest, setGuest] = useState();
 
   useEffect(() => {
     if (state.event == undefined) {
