@@ -21,8 +21,11 @@ const HomeScreen = ({navigation}) => {
   const {state} = React.useContext(Context);
   const [serach, setSerach] = useState('');
   const [lists, setLists] = useState([]);
+  const [id, setId] = useState('');
+  const [itemlike, setItemLike] = useState(false);
 
   useEffect(() => {
+    setId(state.userData);
     firebase
       .firestore()
       .collection('UserEvent')
@@ -35,13 +38,6 @@ const HomeScreen = ({navigation}) => {
         setLists(lists);
       });
   }, []);
-
-  const onupdate = (item) => {
-    firebase.firestore().collection('UserEvent').doc(item.id).update({
-      Uid: state.userData,
-      isSelected: !item.isSelected,
-    });
-  };
   return (
     <SafeAreaView style={styles.container}>
       <CustomHeader
@@ -73,17 +69,49 @@ const HomeScreen = ({navigation}) => {
           }
         })}
         keyExtractor={(item) => item.id}
-        renderItem={({item}) => {
+        renderItem={({item, index}) => {
+          {
+            item.like.map((e) => {
+              console.log('e::::---', e);
+              if (e.id == state.userData) {
+                // setItemLike(e.isSelected);
+                // console.log(e);
+                // console.log(index);
+                // console.log(e.id);
+                // console.log(e.isSelected);
+              }
+            });
+          }
           return (
-            <TouchableOpacity onPress={() => alert(item.like)}>
+            <TouchableOpacity>
               <Card
                 guest={item.Guest.length}
-                icon={item.isSelected ? images.like : images.like_black}
+                icon={itemlike ? images.like : images.like_black}
                 image={item.image}
                 title={item.Title}
                 description={item.Description}
                 onPress={() => {
-                  onupdate(item);
+                  if (item.like.length > 0) {
+                    let data = [];
+                    item.like.map((likeItem) => {
+                      let likeValue = likeItem;
+                      if (likeValue.id === state.userData) {
+                        likeValue.isSelected = !likeValue.isSelected;
+                        data.push(likeValue);
+                      } else {
+                        console.log('false');
+                        data.push(likeValue);
+                      }
+                      console.log('Data :-', data);
+                      firebase
+                        .firestore()
+                        .collection('UserEvent')
+                        .doc(item.id)
+                        .update({
+                          like: data,
+                        });
+                    });
+                  }
                 }}
                 date={item.date}
                 place={item.Place}
