@@ -10,7 +10,16 @@ import {
 import images from '../utility/ImageConst';
 import Checkbox from './Checkbox';
 
-const Card = ({like, title, date, description, onPress, image, place}) => {
+const Card = ({
+  icon,
+  title,
+  date,
+  description,
+  onPress,
+  image,
+  place,
+  guest,
+}) => {
   return (
     <View style={styles.container}>
       <View style={styles.card}>
@@ -19,22 +28,23 @@ const Card = ({like, title, date, description, onPress, image, place}) => {
           source={{uri: image}}
           blurRadius={5}>
           <View style={{flex: 1}}>
-          <Checkbox 
-
-          />
-            {like ? (
-              <TouchableOpacity
-                style={{alignSelf: 'flex-end'}}
-                onPress={onPress}>
-                <Image style={styles.image} source={images.like_black} />
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity
-                style={{flex: 1, alignItems: 'flex-end'}}
-                onPress={onPress}>
-                <Image style={styles.image} source={images.like} />
-              </TouchableOpacity>
-            )}
+            <TouchableOpacity
+              style={{alignSelf: 'flex-end', flexDirection: 'row'}}
+              onPress={onPress}>
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontWeight: 'bold',
+                  marginHorizontal: 10,
+                  padding: 2,
+                  borderRadius: 10,
+                  borderWidth: 2,
+                  borderColor: '#000',
+                }}>
+                {guest}
+              </Text>
+              <Image style={styles.image} source={icon} />
+            </TouchableOpacity>
             <View style={styles.card_content}>
               <Text style={styles.card_title}>{title}</Text>
               <Text style={styles.card_date}>{date}</Text>
@@ -79,7 +89,7 @@ const styles = StyleSheet.create({
   image: {
     width: 30,
     height: 30,
-    margin: 10,
+    //margin: 10,
   },
   card_content: {
     flex: 1,
