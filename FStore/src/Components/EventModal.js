@@ -16,7 +16,7 @@ import images from '../utility/ImageConst';
 import Btn from './Btn';
 import Checkbox from './Checkbox';
 
-const EventModal = ({isVisible, setISVisible, onConfirm, setGuest}) => {
+const EventModal = ({isVisible, setISVisible, setGuest, guest}) => {
   const {signIn, state, Getuser} = useContext(Context);
   const [list, setList] = useState([]);
   const [datas, setDatas] = useState([]);
@@ -27,6 +27,7 @@ const EventModal = ({isVisible, setISVisible, onConfirm, setGuest}) => {
       data.push(e.Email);
       // let listItem = e.Email;
       setList(data);
+      setDatas([]);
     });
   }, []);
   const onADD = (item) => {

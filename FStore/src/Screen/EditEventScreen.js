@@ -23,34 +23,28 @@ import EventModal from '../Components/EventModal';
 import images from '../utility/ImageConst';
 
 const EditEventScreen = ({navigation, props}) => {
-  const {addstore, state, Eventdetils, Getuser} = useContext(Context);
+  const {state, Eventdetils} = useContext(Context);
   const [isLoading, setIsloading] = useState(false);
   const [image, setImage] = useState(null);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [place, setPlace] = useState('');
   const [date, setDate] = useState('');
-  const [guest, setGuest] = useState('');
+  const [guest, setGuest] = useState([]);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isVisible, setISVisible] = useState(false);
-  const [list, setList] = useState([]);
+  const [id, setId] = useState('');
+
+  console.log(state.userData);
+  useEffect(() => {
+    setId(state.userData);
+  }, []);
 
   const handleConfirm = (date) => {
     setDate(moment(date).format('DD/MM/YYYY'));
     hideDatePicker();
   };
 
-  useEffect(() => {
-    let data = [];
-    Getuser();
-    state.user.map((e) => {
-      // console.log(e.Email)
-      data.push(e.Email);
-      // let listItem = e.Email;
-      //console.log('Data ::-', data);
-      setList(data);
-    });
-  }, []);
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
@@ -82,8 +76,7 @@ const EditEventScreen = ({navigation, props}) => {
       alert('Add to Data');
     } else {
       const imageUrl = await uploadImage();
-      Eventdetils(title, description, place, guest, date, imageUrl);
-      // addstore(title,descripation,place,quest,date,image)
+      Eventdetils(title, description, place, guest, date, imageUrl, id);
     }
   };
   const uploadImage = async () => {
@@ -208,10 +201,10 @@ const EditEventScreen = ({navigation, props}) => {
         onCancel={hideDatePicker}
       />
       <EventModal
+        guest={guest}
         setGuest={setGuest}
         isVisible={isVisible}
         setISVisible={setISVisible}
-        // onConfirm={onConfirm}
       />
     </SafeAreaView>
   );

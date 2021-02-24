@@ -16,10 +16,12 @@ const DrawerContext = (props) => {
   const [fname, setFname] = useState('');
   const [image, setImage] = useState(null);
 
+  console.log(state.user);
+
   useEffect(() => {
     gettoken();
     Getuser();
-    if (state.updates == undefined) {
+    if (state.updates === undefined) {
       setFname('xyz');
     } else {
       setImage(state.updates.imageUrl);
@@ -30,14 +32,15 @@ const DrawerContext = (props) => {
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <View style={styles.header_image}>
-        {image!=null? 
-          <Image source={{uri: image}} style={styles.image} /> :
-          <Image source={images.profile} style={styles.image} />
-        }
-        <TouchableOpacity
-          onPress={() => props.navigation.navigate('EditeProfile')}>
-          <Text style={styles.header_text}>Edit profile</Text>
-        </TouchableOpacity>
+          {image != null ? (
+            <Image source={{uri: image}} style={styles.image} />
+          ) : (
+            <Image source={images.profile} style={styles.image} />
+          )}
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate('EditeProfile')}>
+            <Text style={styles.header_text}>Edit profile</Text>
+          </TouchableOpacity>
         </View>
         <Text style={{fontSize: 16}}>Welcome to {fname}</Text>
         <View style={styles.content}>

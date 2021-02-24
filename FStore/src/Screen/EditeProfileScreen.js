@@ -41,7 +41,6 @@ const EditeProfileScreen = ({navigation}) => {
   // ]);
   const [checkedId, setCheckedId] = useState(0);
 
-  console.log(id);
   useEffect(() => {
     gettoken();
     Getuser();

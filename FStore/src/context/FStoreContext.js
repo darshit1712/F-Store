@@ -9,11 +9,13 @@ const storeReducer = (state, action) => {
   switch (action.type) {
     case 'ADD_EVENT':
       return {...state, event: action.payload};
+    // case 'EVENT_DETAILS':
+    //   return {...state, getEvent: action.payload};
     case 'UPDATE_USER':
       return {...state, updates: action.payload};
     case 'USER_DETAILS':
       return {...state, user: action.payload};
-    case 'ADD_USER':
+    case 'CURRENT_USER':
       return {...state, userData: action.payload};
     default:
       return state;
@@ -49,33 +51,7 @@ const Getuser = (dispatch) => {
           id: doc.id,
           ...doc.data(),
         }));
-        console.log(lists);
         dispatch({type: 'USER_DETAILS', payload: Object.values(lists)});
-      });
-  };
-};
-const Eventdetils = (dispatch) => {
-  return (title, description, place, guest, date, imageUrl) => {
-    const data = {title, place, description, date, guest, imageUrl};
-    dispatch({type: 'ADD_EVENT', payload: data});
-    let timestamp = firebase.firestore.FieldValue.serverTimestamp();
-    firestore()
-      .collection('UserEvent')
-      .add({
-        Title: title,
-        Description: description,
-        Place: place,
-        date: date,
-        Guest: guest,
-        image: imageUrl,
-        timestamp: timestamp,
-        isSelected: false,
-      })
-      .then(() => {
-        alert('You have Event save Successfully ');
-      })
-      .catch(() => {
-        alert('Place Add to data ');
       });
   };
 };
@@ -127,9 +103,55 @@ const signout = (dispatch) => {
 const gettoken = (dispatch) => {
   return () => {
     let user = auth().currentUser.uid;
-    dispatch({type: 'ADD_USER', payload: user});
+    dispatch({type: 'CURRENT_USER', payload: user});
   };
 };
+const Eventdetils = (dispatch) => {
+  return (title, description, place, guest, date, imageUrl, id) => {
+    const data = {title, place, description, date, guest, imageUrl, id};
+    dispatch({type: 'ADD_EVENT', payload: data});
+    let timestamp = firebase.firestore.FieldValue.serverTimestamp();
+    firestore()
+      .collection('UserEvent')
+      .add({
+        Title: title,
+        Description: description,
+        Place: place,
+        date: date,
+        Guest: guest,
+        image: imageUrl,
+        timestamp: timestamp,
+        like: [
+          {
+            id: id,
+            isSelected: false,
+          },
+        ],
+      })
+      .then(() => {
+        alert('You have Event save Successfully ');
+      })
+      .catch(() => {
+        alert('Place Add to data ');
+      });
+  };
+};
+// const GetEvent = (dispatch) => {
+//   return () => {
+//     firebase
+//       .firestore()
+//       .collection('UserEvent')
+//       .orderBy('date', 'asc')
+//       .onSnapshot((snapshot) => {
+//         const Events = snapshot.docs.map((doc) => ({
+//           id: doc.id,
+//           ...doc.data(),
+//         }));
+//         console.log('events:::-', Events);
+//         dispatch({type: 'EVENT_DETAILS', payload: Object.values(Events)});
+//       });
+//   };
+// };
 
 export const {Context, Provider} = createDataContext(
   storeReducer,
@@ -141,6 +163,7 @@ export const {Context, Provider} = createDataContext(
     Getuser,
     signup,
     UpadataUsedetils,
+    // GetEvent,
   },
   [],
 );

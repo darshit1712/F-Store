@@ -70,18 +70,6 @@ const HomeScreen = ({navigation}) => {
         })}
         keyExtractor={(item) => item.id}
         renderItem={({item, index}) => {
-          {
-            item.like.map((e) => {
-              console.log('e::::---', e);
-              if (e.id == state.userData) {
-                // setItemLike(e.isSelected);
-                // console.log(e);
-                // console.log(index);
-                // console.log(e.id);
-                // console.log(e.isSelected);
-              }
-            });
-          }
           return (
             <TouchableOpacity>
               <Card
@@ -93,23 +81,40 @@ const HomeScreen = ({navigation}) => {
                 onPress={() => {
                   if (item.like.length > 0) {
                     let data = [];
+                    let finaldata = [];
+
                     item.like.map((likeItem) => {
                       let likeValue = likeItem;
                       if (likeValue.id === state.userData) {
                         likeValue.isSelected = !likeValue.isSelected;
                         data.push(likeValue);
+                        firebase
+                          .firestore()
+                          .collection('UserEvent')
+                          .doc(item.id)
+                          .update({
+                            like: data,
+                          });
                       } else {
-                        console.log('false');
-                        data.push(likeValue);
+                        let newdata = [];
+                        console.log('data else:::-', data);
+                        if (state.userData !== likeValue.id) {
+                          newdata.push({
+                            isSelected: true,
+                            id: state.userData,
+                          });
+                          data.push(likeValue);
+                          finaldata = data.concat(newdata);
+                          console.log('final data:::--', finaldata);
+                          firebase
+                            .firestore()
+                            .collection('UserEvent')
+                            .doc(item.id)
+                            .update({
+                              like: finaldata,
+                            });
+                        }
                       }
-                      console.log('Data :-', data);
-                      firebase
-                        .firestore()
-                        .collection('UserEvent')
-                        .doc(item.id)
-                        .update({
-                          like: data,
-                        });
                     });
                   }
                 }}
