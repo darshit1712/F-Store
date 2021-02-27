@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import images from '../utility/ImageConst';
-import Checkbox from './Checkbox';
+import {Context} from '../context/FStoreContext';
 
 const Card = ({
   icon,
@@ -19,7 +19,15 @@ const Card = ({
   image,
   place,
   guest,
+  length,
 }) => {
+  const {state} = React.useContext(Context);
+  let index =
+    icon &&
+    icon.length > 0 &&
+    icon.findIndex((item) => {
+      return item.id === state.userData;
+    });
   return (
     <View style={styles.container}>
       <View style={styles.card}>
@@ -43,7 +51,21 @@ const Card = ({
                 }}>
                 {guest}
               </Text>
-              <Image style={styles.image} source={icon} />
+
+              {icon && icon.length > 0 ? (
+                index > -1 ? (
+                  <Image
+                    style={styles.image}
+                    source={
+                      icon[index].isSelected ? images.like : images.like_black
+                    }
+                  />
+                ) : (
+                  <Image style={styles.image} source={images.like_black} />
+                )
+              ) : (
+                <Image style={styles.image} source={images.like_black} />
+              )}
             </TouchableOpacity>
             <View style={styles.card_content}>
               <Text style={styles.card_title}>{title}</Text>

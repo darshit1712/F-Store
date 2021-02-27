@@ -37,7 +37,7 @@ const SignUpScreen = ({navigation}) => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [image, setImage] = useState(null);
   const [show, setShow] = useState(true);
-  const[showcomfimpassword,setShowComfimpassword]=useState(true)
+  const [showcomfimpassword, setShowComfimpassword] = useState(true);
   const handleConfirm = (date) => {
     setDob(moment(date).format('DD-MM-YYYY'));
     hideDatePicker();
@@ -60,8 +60,7 @@ const SignUpScreen = ({navigation}) => {
       width: 100,
       height: 100,
       cropping: true,
-      compressImageQuality:0
-
+      compressImageQuality: 0,
     }).then((image) => {
       const uriImage = image.sourceURL;
       setImage(uriImage);
@@ -90,7 +89,7 @@ const SignUpScreen = ({navigation}) => {
       alert('Passwords must be same');
     } else {
       const imageUrl = await uploadImage();
-      signup(email, password,fname,lname,dob,gender,imageUrl);
+      signup(email, password, fname, lname, dob, gender, imageUrl);
     }
   };
   const uploadImage = async () => {
@@ -131,10 +130,7 @@ const SignUpScreen = ({navigation}) => {
             style={{flexDirection: 'row', justifyContent: 'center'}}
             onPress={onAddprofile}>
             {image != null ? (
-              <Image
-                style={styles.header_icon}
-                source={{uri: image}}
-              />
+              <Image style={styles.header_icon} source={{uri: image}} />
             ) : (
               <Image
                 style={styles.header_iconCamera}
@@ -158,26 +154,17 @@ const SignUpScreen = ({navigation}) => {
             value={email}
             onChangeText={(email) => setEmail(email)}
           />
-          <TouchableOpacity
-            onPress={showDatePicker}
-            style={styles.datestyles}>
+          <TouchableOpacity onPress={showDatePicker} style={styles.datestyles}>
             {dob.length == 0 ? (
-              <Text
-                style={styles.date_text}>
-                Date of Birthday*
-              </Text>
+              <Text style={styles.date_text}>Date of Birthday*</Text>
             ) : (
               <Text style={{marginBottom: 10, color: '#000', fontSize: 16}}>
                 {dob}
               </Text>
             )}
           </TouchableOpacity>
-          <Text
-            style={styles.gender_styles}>
-            Gender
-          </Text>
-          <View
-            style={styles.gender_chechbox}>
+          <Text style={styles.gender_styles}>Gender</Text>
+          <View style={styles.gender_chechbox}>
             <Checkbox
               label="Male"
               onChange={() => setGender('male')}
@@ -199,8 +186,8 @@ const SignUpScreen = ({navigation}) => {
             value={password}
             onChangeText={(password) => setPassword(password)}
             secureTextEntry={show}
-            onPress={()=>setShow(!show)}
-            icon={show?images.visible :images.invisible}
+            onPress={() => setShow(!show)}
+            icon={show ? images.visible : images.invisible}
           />
           <Input
             placeholder="Confirm Password*"
@@ -209,8 +196,8 @@ const SignUpScreen = ({navigation}) => {
               setComfirmpassword(comfirmpassword)
             }
             secureTextEntry={showcomfimpassword}
-            onPress={()=>setShowComfimpassword(!showcomfimpassword)}
-            icon={showcomfimpassword ?images.visible:images.invisible}
+            onPress={() => setShowComfimpassword(!showcomfimpassword)}
+            icon={showcomfimpassword ? images.visible : images.invisible}
           />
           <Btn type="outline" title="Sign UP" onPress={onsubmit} />
         </View>
@@ -219,13 +206,8 @@ const SignUpScreen = ({navigation}) => {
           <TouchableOpacity
             style={styles.signup_header}
             onPress={() => navigation.navigate('SignIn')}>
-            <Image
-              source={images.back}
-              style={styles.signup_icon}
-            />
-            <Text style={styles.sign_text}>
-              Sign In
-            </Text>
+            <Image source={images.back} style={styles.signup_icon} />
+            <Text style={styles.sign_text}>Sign In</Text>
           </TouchableOpacity>
         </View>
         <DateTimePickerModal
@@ -240,73 +222,75 @@ const SignUpScreen = ({navigation}) => {
   );
 };
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-    },
-    header: {
-        alignItems: 'center',
-        marginBottom: '5%',
-    },
-    header_icon: {
-        height: 150,
-        width: 150,
-        borderRadius: 200,
-    },
-    header_iconCamera:{
-        width: 60, 
-        height: 60, 
-        marginLeft: 10
-    },
-    datestyles:{
-        borderBottomWidth: 0.5,
-        marginBottom: 30,
-    },
-    date_text:{
-        marginTop:20,
-        marginBottom:10,
-        color: 'rgb(120, 120, 120)',
-        fontSize: 18,
-        marginHorizontal:5
-    },
-    gender_styles:{
-        marginBottom: 20,
-        color: 'rgb(120, 120, 120)',
-        fontSize: 18,
-    },
-    gender_chechbox:{
-        flexDirection: 'row',
-        marginBottom: 5,
-        marginHorizontal:5
-    },
-    content: {
-        flex: 1,
-        marginHorizontal: 20,
-        marginBottom: '5%',
-    },
-    footer: {
-        color: '#1abc9c',
-        fontSize: 18,
-        marginHorizontal: 20,
-        alignItems: 'center',
-    },
-    error: {
-        fontSize: 18,
-        color: 'red',
-    },
-    signup_header:{
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginVertical: 5,
-    },
-    signup_icon:{
-        width: 18, height: 18, marginHorizontal: 2
-    },
-    sign_text:{
-        color: '#000', 
-        fontWeight: 'bold', 
-        fontSize: 18
-    }
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  header: {
+    alignItems: 'center',
+    marginBottom: '5%',
+  },
+  header_icon: {
+    height: 150,
+    width: 150,
+    borderRadius: 200,
+  },
+  header_iconCamera: {
+    width: 60,
+    height: 60,
+    marginLeft: 10,
+  },
+  datestyles: {
+    borderBottomWidth: 0.5,
+    marginBottom: 30,
+  },
+  date_text: {
+    marginTop: 20,
+    marginBottom: 10,
+    color: 'rgb(120, 120, 120)',
+    fontSize: 18,
+    marginHorizontal: 5,
+  },
+  gender_styles: {
+    marginBottom: 20,
+    color: 'rgb(120, 120, 120)',
+    fontSize: 18,
+  },
+  gender_chechbox: {
+    flexDirection: 'row',
+    marginBottom: 5,
+    marginHorizontal: 5,
+  },
+  content: {
+    flex: 1,
+    marginHorizontal: 20,
+    marginBottom: '5%',
+  },
+  footer: {
+    color: '#1abc9c',
+    fontSize: 18,
+    marginHorizontal: 20,
+    alignItems: 'center',
+  },
+  error: {
+    fontSize: 18,
+    color: 'red',
+  },
+  signup_header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 5,
+  },
+  signup_icon: {
+    width: 18,
+    height: 18,
+    marginHorizontal: 2,
+  },
+  sign_text: {
+    color: '#000',
+    fontWeight: 'bold',
+    fontSize: 18,
+  },
 });
 
 export default SignUpScreen;

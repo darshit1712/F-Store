@@ -21,11 +21,7 @@ const HomeScreen = ({navigation}) => {
   const {state} = React.useContext(Context);
   const [serach, setSerach] = useState('');
   const [lists, setLists] = useState([]);
-  const [id, setId] = useState('');
-  const [itemlike, setItemLike] = useState(false);
-
   useEffect(() => {
-    setId(state.userData);
     firebase
       .firestore()
       .collection('UserEvent')
@@ -38,6 +34,49 @@ const HomeScreen = ({navigation}) => {
         setLists(lists);
       });
   }, []);
+  const onLikePress = (item) => {
+    if (item.like && item.like.length > 0) {
+      let index = item.like.findIndex((likeItem) => {
+        return likeItem.id === state.userData;
+      });
+      if (index > -1) {
+        let newData = [...item.like];
+        newData[index] = {
+          ...newData[index],
+          isSelected: !newData[index].isSelected,
+        };
+        firebase.firestore().collection('UserEvent').doc(item.id).update({
+          like: newData,
+        });
+      } else {
+        let newUser = [
+          {
+            id: state.userData,
+            isSelected: true,
+          },
+        ];
+        let finalData = [...item.like, ...newUser];
+        firebase.firestore().collection('UserEvent').doc(item.id).update({
+          like: finalData,
+        });
+      }
+    } else {
+      firestore()
+        .collection('UserEvent')
+        .doc(item.id)
+        .set(
+          {
+            like: [
+              {
+                id: state.userData,
+                isSelected: true,
+              },
+            ],
+          },
+          {merge: true},
+        );
+    }
+  };
   return (
     <SafeAreaView style={styles.container}>
       <CustomHeader
@@ -69,54 +108,17 @@ const HomeScreen = ({navigation}) => {
           }
         })}
         keyExtractor={(item) => item.id}
-        renderItem={({item, index}) => {
+        renderItem={({item}) => {
           return (
             <TouchableOpacity>
               <Card
                 guest={item.Guest.length}
-                icon={itemlike ? images.like : images.like_black}
+                icon={item.like}
                 image={item.image}
                 title={item.Title}
                 description={item.Description}
                 onPress={() => {
-                  if (item.like.length > 0) {
-                    let data = [];
-                    let finaldata = [];
-
-                    item.like.map((likeItem) => {
-                      let likeValue = likeItem;
-                      if (likeValue.id === state.userData) {
-                        likeValue.isSelected = !likeValue.isSelected;
-                        data.push(likeValue);
-                        firebase
-                          .firestore()
-                          .collection('UserEvent')
-                          .doc(item.id)
-                          .update({
-                            like: data,
-                          });
-                      } else {
-                        let newdata = [];
-                        console.log('data else:::-', data);
-                        if (state.userData !== likeValue.id) {
-                          newdata.push({
-                            isSelected: true,
-                            id: state.userData,
-                          });
-                          data.push(likeValue);
-                          finaldata = data.concat(newdata);
-                          console.log('final data:::--', finaldata);
-                          firebase
-                            .firestore()
-                            .collection('UserEvent')
-                            .doc(item.id)
-                            .update({
-                              like: finaldata,
-                            });
-                        }
-                      }
-                    });
-                  }
+                  onLikePress(item);
                 }}
                 date={item.date}
                 place={item.Place}
@@ -128,11 +130,10 @@ const HomeScreen = ({navigation}) => {
     </SafeAreaView>
   );
 };
-
-export default HomeScreen;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
 });
+
+export default HomeScreen;

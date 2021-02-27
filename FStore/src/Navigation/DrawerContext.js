@@ -15,9 +15,6 @@ const DrawerContext = (props) => {
   const {signout, state, gettoken, Getuser} = useContext(Context);
   const [fname, setFname] = useState('');
   const [image, setImage] = useState(null);
-
-  console.log(state.user);
-
   useEffect(() => {
     gettoken();
     Getuser();

@@ -4,13 +4,10 @@ import storage, {firebase} from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 
-//reducer add
 const storeReducer = (state, action) => {
   switch (action.type) {
     case 'ADD_EVENT':
       return {...state, event: action.payload};
-    // case 'EVENT_DETAILS':
-    //   return {...state, getEvent: action.payload};
     case 'UPDATE_USER':
       return {...state, updates: action.payload};
     case 'USER_DETAILS':
@@ -121,12 +118,6 @@ const Eventdetils = (dispatch) => {
         Guest: guest,
         image: imageUrl,
         timestamp: timestamp,
-        like: [
-          {
-            id: id,
-            isSelected: false,
-          },
-        ],
       })
       .then(() => {
         alert('You have Event save Successfully ');
@@ -136,22 +127,6 @@ const Eventdetils = (dispatch) => {
       });
   };
 };
-// const GetEvent = (dispatch) => {
-//   return () => {
-//     firebase
-//       .firestore()
-//       .collection('UserEvent')
-//       .orderBy('date', 'asc')
-//       .onSnapshot((snapshot) => {
-//         const Events = snapshot.docs.map((doc) => ({
-//           id: doc.id,
-//           ...doc.data(),
-//         }));
-//         console.log('events:::-', Events);
-//         dispatch({type: 'EVENT_DETAILS', payload: Object.values(Events)});
-//       });
-//   };
-// };
 
 export const {Context, Provider} = createDataContext(
   storeReducer,

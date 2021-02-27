@@ -25,13 +25,12 @@ const EventModal = ({isVisible, setISVisible, setGuest, guest}) => {
     Getuser();
     state.user.map((e) => {
       data.push(e.Email);
-      // let listItem = e.Email;
       setList(data);
-      setDatas([]);
     });
   }, []);
   const onADD = (item) => {
     if (datas) {
+      console.log('datas', datas);
       var demo = [...datas];
     } else {
       var demo = [];
@@ -63,7 +62,6 @@ const EventModal = ({isVisible, setISVisible, setGuest, guest}) => {
               data={list}
               keyExtractor={(index) => index.toString()}
               renderItem={({item}) => {
-                // console.log(item)
                 return (
                   <View style={styles.content}>
                     <Checkbox

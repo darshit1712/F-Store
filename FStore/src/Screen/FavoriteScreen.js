@@ -10,11 +10,9 @@ import {Context} from '../context/FStoreContext';
 
 const FavoriteScreen = ({navigation}) => {
   const {state} = React.useContext(Context);
-
-  const [like, setLike] = useState([]);
   const [serach, setSerach] = useState('');
-  const [passengersList, setPassengersList] = useState([]);
   const [lists, setLists] = useState([]);
+  const [datas, setData] = useState([]);
 
   useEffect(() => {
     firebase
@@ -26,17 +24,17 @@ const FavoriteScreen = ({navigation}) => {
           id: doc.id,
           ...doc.data(),
         }));
-        setLists(list.filter((e) => e.isSelected == true));
+        setLists(
+          list.filter(
+            (obj) =>
+              obj.like &&
+              obj.like.find(
+                (o) => o.id === state.userData && o.isSelected === true,
+              ),
+          ),
+        );
       });
   }, []);
-
-  const onupdate = (item) => {
-    console.log(item.Guest.length);
-    firebase.firestore().collection('UserEvent').doc(item.id).update({
-      Uid: state.userData,
-      isSelected: !item.isSelected,
-    });
-  };
 
   return (
     <SafeAreaView style={styles.contioner}>
@@ -72,12 +70,30 @@ const FavoriteScreen = ({navigation}) => {
           return (
             <Card
               guest={item.Guest.length}
-              icon={item.isSelected ? images.like : images.like_black}
+              icon={item.like}
               image={item.image}
               title={item.Title}
               description={item.Description}
               onPress={() => {
-                onupdate(item);
+                if (item.like && item.like.length > 0) {
+                  let index = item.like.findIndex((likeItem) => {
+                    return likeItem.id === state.userData;
+                  });
+                  if (index > -1) {
+                    let newData = [...item.like];
+                    newData[index] = {
+                      ...newData[index],
+                      isSelected: !newData[index].isSelected,
+                    };
+                    firebase
+                      .firestore()
+                      .collection('UserEvent')
+                      .doc(item.id)
+                      .update({
+                        like: newData,
+                      });
+                  }
+                }
               }}
               date={item.date}
               place={item.Place}
