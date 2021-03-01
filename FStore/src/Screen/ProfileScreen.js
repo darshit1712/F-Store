@@ -20,7 +20,14 @@ const ProfileScreen = ({navigation}) => {
   useEffect(() => {
     gettoken();
     Getuser();
-    if (state.updates === undefined) {
+    if (state.updates !== undefined) {
+      setImage(state.updates.imageUrl);
+      setFname(state.updates.fname);
+      setLname(state.updates.lname);
+      setEmail(state.updates.email);
+      setDob(state.updates.dob);
+      setGender(state.updates.gender);
+    } else {
       state.user.map((e) => {
         if (e.id === state.userData) {
           setImage(e.Image);
@@ -31,13 +38,6 @@ const ProfileScreen = ({navigation}) => {
           setGender(e.Gender);
         }
       });
-    } else {
-      setImage(state.updates.imageUrl);
-      setFname(state.updates.fname);
-      setLname(state.updates.lname);
-      setEmail(state.updates.email);
-      setDob(state.updates.dob);
-      setGender(state.updates.gender);
     }
   }, [state.updates]);
   return (
@@ -84,7 +84,10 @@ const ProfileScreen = ({navigation}) => {
           />
           <Text style={styles.content_gender_label}>Gender</Text>
           <View style={styles.content_gender_text}>
-            <Text style={{marginBottom: 10, fontSize: 20,marginHorizontal:10}}>{gender}</Text>
+            <Text
+              style={{marginBottom: 10, fontSize: 20, marginHorizontal: 10}}>
+              {gender}
+            </Text>
           </View>
           <Btn title="Log Out" onPress={() => signout()} />
         </View>
