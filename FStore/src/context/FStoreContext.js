@@ -1,5 +1,4 @@
 import createDataContext from './createfstore';
-import AsyncStorage from '@react-native-community/async-storage';
 import storage, {firebase} from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
