@@ -22,7 +22,7 @@ import {Context} from '../context/FStoreContext';
 import EventModal from '../Components/EventModal';
 import images from '../utility/ImageConst';
 
-const EditEventScreen = ({navigation, props}) => {
+const EditEventScreen = ({navigation}) => {
   const {state, Eventdetils} = useContext(Context);
   const [isLoading, setIsloading] = useState(false);
   const [image, setImage] = useState(null);

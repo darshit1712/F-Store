@@ -14,7 +14,7 @@ import CustomHeader from '../Components/CustomHeader';
 import Input from '../Components/Input';
 import Checkbox from '../Components/Checkbox';
 import moment from 'moment';
-// import ImagePicker from 'react-native-image-crop-picker';
+import ImagePicker from 'react-native-image-crop-picker';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Context} from '../context/FStoreContext';
 import storage, {firebase} from '@react-native-firebase/storage';

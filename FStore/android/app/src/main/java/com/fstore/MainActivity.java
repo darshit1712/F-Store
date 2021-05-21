@@ -1,7 +1,7 @@
 package com.fstore;
 
 import com.facebook.react.ReactActivity;
-import com.reactnative.picker.PickerPackage; // import package 
+
 
 public class MainActivity extends ReactActivity {
 
@@ -12,6 +12,6 @@ public class MainActivity extends ReactActivity {
   @Override
   protected String getMainComponentName() {
     return "FStore";
-     new PickerPackage() 
+    
   }
 }

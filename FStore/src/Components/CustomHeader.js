@@ -25,6 +25,7 @@ const CustomHeader = ({
       <View style={styles.left_header_style}>
         <Text style={styles.left_header_title}>{title}</Text>
       </View>
+
       <View style={styles.right_header}>
         <TouchableOpacity style={{alignSelf: 'flex-end'}} onPress={navigate}>
           <Image style={styles.right_header_icon} source={righticons} />

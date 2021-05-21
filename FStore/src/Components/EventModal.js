@@ -29,6 +29,17 @@ const EventModal = ({isVisible, setISVisible, setGuest, guest}) => {
     });
   }, []);
   const onADD = (item) => {
+    // const updatedData = list.map((element) => {
+    //   if (element.id === item.id) {
+    //     return {
+    //       ...element,
+    //       isSelected: element.isSelected ? !element.isSelected : true,
+    //     };
+    //   }
+    //   return element;
+    // });
+    // setDatas([...updatedData]);
+
     if (datas) {
       console.log('datas', datas);
       var demo = [...datas];

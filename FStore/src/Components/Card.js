@@ -19,15 +19,16 @@ const Card = ({
   image,
   place,
   guest,
-  length,
 }) => {
   const {state} = React.useContext(Context);
+
   let index =
     icon &&
     icon.length > 0 &&
     icon.findIndex((item) => {
       return item.id === state.userData;
     });
+
   return (
     <View style={styles.container}>
       <View style={styles.card}>

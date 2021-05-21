@@ -1,9 +1,10 @@
 apply plugin: "com.android.application"
 apply plugin: 'com.google.gms.google-services'
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
+
 import com.android.build.OutputFile
 
-/**
+/**ss
  * The react.gradle file registers a task for each build variant (e.g. bundleDebugJsAndAssets
  * and bundleReleaseJsAndAssets).
  * These basically call `react-native bundle` with the correct arguments during the Android build
@@ -88,7 +89,7 @@ project.ext.vectoricons = [
     iconFontNames: [ 'MaterialIcons.ttf', 'EvilIcons.ttf' ] // Name of the font files you want to copy
 ]
 
-apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
+
 /**
  * Set this to true to create two separate APKs instead of one:
  *   - An APK that only works on ARM devices
@@ -135,14 +136,14 @@ android {
     }
 
     defaultConfig {
-       compile project(':react-native-image-crop-picker')
-
+        multiDexEnabled true
+        vectorDrawables.useSupportLibrary = true
         applicationId "com.fstore"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
-       vectorDrawables.useSupportLibrary = true
+        
 
     }
     splits {
@@ -187,7 +188,7 @@ android {
             }
 
         }
-    }
+    }   
 }
 
 dependencies {

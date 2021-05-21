@@ -39,12 +39,15 @@ const HomeScreen = ({navigation}) => {
       let index = item.like.findIndex((likeItem) => {
         return likeItem.id === state.userData;
       });
+
       if (index > -1) {
         let newData = [...item.like];
+        console.log(newData);
         newData[index] = {
           ...newData[index],
           isSelected: !newData[index].isSelected,
         };
+
         firebase.firestore().collection('UserEvent').doc(item.id).update({
           like: newData,
         });
